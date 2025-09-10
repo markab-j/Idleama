@@ -1,22 +1,19 @@
-import { invoke } from "@tauri-apps/api/core";
+import kaplay from 'kaplay';
+import './ui';
+import { loadAssets } from './load-assets';
+import { CharacterFactory } from './character/character.factory';
 
-let greetInputEl: HTMLInputElement | null;
-let greetMsgEl: HTMLElement | null;
+const canvas = document.getElementById('game-container') as HTMLCanvasElement;
 
-async function greet() {
-  if (greetMsgEl && greetInputEl) {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    greetMsgEl.textContent = await invoke("greet", {
-      name: greetInputEl.value,
-    });
-  }
-}
-
-window.addEventListener("DOMContentLoaded", () => {
-  greetInputEl = document.querySelector("#greet-input");
-  greetMsgEl = document.querySelector("#greet-msg");
-  document.querySelector("#greet-form")?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    greet();
-  });
+const k = kaplay({
+  background: '#97D3D3',
+  width: 800,
+  height: 600,
+  canvas,
 });
+
+loadAssets(k);
+
+const characterFactory = new CharacterFactory(k);
+
+characterFactory.create('default', k.vec2(200, 300));
