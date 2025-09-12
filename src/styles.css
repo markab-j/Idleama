@@ -1,4 +1,6 @@
 :root {
+  border-radius: 0px;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

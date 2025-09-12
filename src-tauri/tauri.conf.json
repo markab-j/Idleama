@@ -20,14 +20,15 @@
         "decorations": false,
         "alwaysOnTop": true,
         "resizable": true,
-        "transparent": true
+        "transparent": true,
+        "shadow": false
       }
     ],
     "security": {
       "csp": "img-src 'self' asset: http://asset.localhost",
       "assetProtocol": {
         "enable": true,
-        "scope": ["$DOCUMENT/idleama/**/*"]
+        "scope": ["$DOCUMENT/idleama/**/*", "$RESOURCE/**"]
       }
     }
   },
@@ -40,6 +41,9 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
+    ],
+    "resources": [
+      "assets/"
     ]
   }
 }

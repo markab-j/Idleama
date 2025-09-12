@@ -19,11 +19,16 @@
     "positioner:default",
     {
       "identifier": "fs:scope",
-      "allow": [{ "path": "$DOCUMENT/idleama/**/*" }]
+      "allow": [
+        { "path": "$DOCUMENT/idleama/**/*" },
+        { "path": "$RESOURCE/**" }
+      ]
     },
     "fs:allow-exists",
     "fs:allow-mkdir",
     "fs:allow-read-text-file",
+    "fs:allow-resource-read-recursive",
+    "fs:allow-resource-read",
     "fs:read-dirs"
   ]
 }

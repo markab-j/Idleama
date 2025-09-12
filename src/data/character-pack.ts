@@ -1,10 +1,10 @@
+import { convertFileSrc } from "@tauri-apps/api/core";
 import { join } from "@tauri-apps/api/path";
-import { convertFileSrc  } from "@tauri-apps/api/core";
 import { exists, readDir, readTextFile } from "@tauri-apps/plugin-fs";
+import z from "zod";
 import type { CharacterPack } from "@/types/character-pack";
 import { getCharacterPackPath } from "./path";
 import { CharacterPackJsonSchema } from "./schema/character-pack-json.schema";
-import z from "zod";
 
 export async function getCharacterPackData(): Promise<CharacterPack[]> {
   const packPath = await getCharacterPackPath();
@@ -33,9 +33,9 @@ export async function getCharacterPackData(): Promise<CharacterPack[]> {
 
       if (!result.success) {
         console.warn(z.prettifyError(result.error));
-        continue; 
+        continue;
       }
- 
+
       const characterPackJson = result.data;
 
       loadedPacks.push({

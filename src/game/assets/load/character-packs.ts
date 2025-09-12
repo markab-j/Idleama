@@ -8,6 +8,9 @@ export async function loadCharacterPacks(k: KAPLAYCtx): Promise<void> {
   console.log("Loaded CharacterPacks: ", characterPacks);
 
   for (const pack of characterPacks) {
-    await k.loadSpriteAtlas(pack.spritePath, getCharacterSpriteAtlasData(pack.pack.packName));
+    await k.loadSpriteAtlas(
+      pack.spritePath,
+      getCharacterSpriteAtlasData(pack.pack.packName),
+    );
   }
 }

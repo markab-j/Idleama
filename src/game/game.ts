@@ -1,8 +1,8 @@
 import kaplay from "kaplay";
 import { loadAssets } from "@/game/assets/load";
 import { CharacterFactory } from "@/game/character/character.factory";
-import { drawLevel } from "./map/draw-level";
 import { getCharacterSpriteKey } from "./assets/utils";
+import { drawLevel } from "./map/draw-level";
 
 export async function startGame(width: number, height: number) {
   const canvas = document.getElementById("game-container") as HTMLCanvasElement;
@@ -27,5 +27,8 @@ export async function startGame(width: number, height: number) {
   const characterFactory = new CharacterFactory(k);
 
   characterFactory.create("character_default", k.center().toFixed(0));
-  characterFactory.create(getCharacterSpriteKey("testCharacter"), k.center().toFixed(0));
+  characterFactory.create(
+    getCharacterSpriteKey("testCharacter"),
+    k.center().toFixed(0),
+  );
 }
