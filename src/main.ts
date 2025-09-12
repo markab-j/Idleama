@@ -1,7 +1,6 @@
-import '@/ui';
-import { initWindow } from './init-window';
-import { startGame } from '@/game/game';
-
+import "@/ui";
+import { startGame } from "@/game/game";
+import { initWindow } from "./init-window";
 
 async function main() {
   const { size, scaleFactor } = await initWindow();
@@ -13,6 +12,6 @@ async function main() {
 }
 
 main()
-    .then()
-    .catch((e) => console.error(e))
-    .finally(() => console.log("Initialized"));
+  .then()
+  .catch((e) => console.error(e))
+  .finally(() => console.log("Initialized"));

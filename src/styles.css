@@ -8,8 +8,6 @@
 
 canvas {
   image-rendering: pixelated;
-  image-rendering: crisp-edges;
-  image-rendering: -moz-crisp-edges;
 }
 
 html,
@@ -25,7 +23,6 @@ body {
   justify-content: center;
   text-align: center;
   background-color: transparent;
-  background: transparent;
 }
 
 .title-bar-container {
