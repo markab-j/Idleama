@@ -1,14 +1,15 @@
-import "@/ui";
 import { startGame } from "@/game/game";
-import { initWindow } from "./init-window";
+import { initWindow } from "@/ui";
+import { initPath } from "./data/init";
 
 async function main() {
+  await initPath();
   const { size, scaleFactor } = await initWindow();
 
   const width = size.width / scaleFactor;
   const height = size.height / scaleFactor;
 
-  startGame(width, height);
+  await startGame(width, height);
 }
 
 main()

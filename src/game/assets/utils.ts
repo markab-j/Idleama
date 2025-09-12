@@ -1,36 +1,18 @@
-import type { KAPLAYCtx, SpriteAnim, SpriteAtlasData } from "kaplay";
-import { CharacterAnim } from "./character/enums/anim.enum";
+import type { SpriteAnim, SpriteAtlasData } from "kaplay";
+import { CharacterAnim } from "../character/enums/anim.enum";
+import { CHARACTER_SPRITE_HEIGHT, CHARACTER_SPRITE_WIDTH } from "./constants";
 
-const CHARACTER_WIDTH = 16;
-const CHARACTER_HEIGHT = 32;
-
-export function loadAssets(k: KAPLAYCtx): void {
-  loadDefaultCharacter(k);
-
-  k.loadSprite("grass_tile", "src/assets/grass_tile.png", {
-    sliceX: 11,
-    sliceY: 7,
-  });
+export function getCharacterSpriteKey(id: string): string {
+  return `character_${id}`;
 }
 
-function loadDefaultCharacter(k: KAPLAYCtx): void {
-  k.loadJSON(
-    "character_data_default",
-    "src/assets/chracters/default/chracter.json",
-  );
-  k.loadSpriteAtlas(
-    "src/assets/chracters/default/sprite.png",
-    getCharacterSpriteAtlasData("default"),
-  );
-}
-
-function getCharacterSpriteAtlasData(id: string): SpriteAtlasData {
+export function getCharacterSpriteAtlasData(id: string): SpriteAtlasData {
   return {
-    [`character_${id}`]: {
+    [getCharacterSpriteKey(id)]: {
       x: 0,
       y: 0,
-      width: CHARACTER_WIDTH * 4,
-      height: CHARACTER_HEIGHT * 10,
+      width: CHARACTER_SPRITE_WIDTH * 4,
+      height: CHARACTER_SPRITE_HEIGHT * 10,
       sliceX: 4,
       sliceY: 10,
       anims: {

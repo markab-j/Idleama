@@ -41,6 +41,10 @@ export async function initWindow(): Promise<
 
   currentWindow.setResizable(false);
 
+  if (!currentWindow.isVisible()) {
+    currentWindow.show();
+  }
+
   return {
     size: new PhysicalSize(width, height),
     scaleFactor: monitor.scaleFactor,

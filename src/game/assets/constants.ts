@@ -1,0 +1,2 @@
+export const CHARACTER_SPRITE_WIDTH = 16;
+export const CHARACTER_SPRITE_HEIGHT = 32;

@@ -12,11 +12,18 @@
     "core:window:allow-set-decorations",
     "core:window:allow-set-size",
     "core:window:allow-set-size-constraints",
-    "core:tray:allow-set-visible",
     "core:window:allow-is-visible",
     "core:window:allow-set-position",
     "core:window:allow-set-resizable",
     "core:window:allow-start-dragging",
-    "positioner:default"
+    "positioner:default",
+    {
+      "identifier": "fs:scope",
+      "allow": [{ "path": "$DOCUMENT/idleama/**/*" }]
+    },
+    "fs:allow-exists",
+    "fs:allow-mkdir",
+    "fs:allow-read-text-file",
+    "fs:read-dirs"
   ]
 }
