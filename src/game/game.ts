@@ -9,7 +9,7 @@ export function startGame(width: number, height: number) {
     const k = kaplay({
         // background: '#97D3D3',
         width,
-        height: height,
+        height,
         canvas,
         debug: true,
     });
