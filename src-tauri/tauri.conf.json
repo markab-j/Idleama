@@ -13,9 +13,13 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "idleama",
+        "title": "Idleama",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "decorations": false,
+        "alwaysOnTop": true,
+        "resizable": true,
+        "transparent": true
       }
     ],
     "security": {

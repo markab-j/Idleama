@@ -1,19 +1,18 @@
-import kaplay from 'kaplay';
-import './ui';
-import { loadAssets } from './load-assets';
-import { CharacterFactory } from './character/character.factory';
+import '@/ui';
+import { initWindow } from './init-window';
+import { startGame } from '@/game/game';
 
-const canvas = document.getElementById('game-container') as HTMLCanvasElement;
 
-const k = kaplay({
-  background: '#97D3D3',
-  width: 800,
-  height: 600,
-  canvas,
-});
+async function main() {
+  const { size, scaleFactor } = await initWindow();
 
-loadAssets(k);
+  const width = size.width / scaleFactor;
+  const height = size.height / scaleFactor;
 
-const characterFactory = new CharacterFactory(k);
+  startGame(width, height);
+}
 
-characterFactory.create('default', k.vec2(200, 300));
+main()
+    .then()
+    .catch((e) => console.error(e))
+    .finally(() => console.log("Initialized"));
