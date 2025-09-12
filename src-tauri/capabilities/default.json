@@ -16,6 +16,7 @@
     "core:window:allow-is-visible",
     "core:window:allow-set-position",
     "core:window:allow-set-resizable",
+    "core:window:allow-start-dragging",
     "positioner:default"
   ]
 }
