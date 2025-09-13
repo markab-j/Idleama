@@ -31,4 +31,5 @@ export default defineConfig(async ({ mode }) => ({
   esbuild: {
     pure: mode === 'production' ? ['console.log'] : [],
   },
+  publicDir: 'public'
 }));

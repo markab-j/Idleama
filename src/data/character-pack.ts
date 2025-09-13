@@ -3,13 +3,12 @@ import { join } from "@tauri-apps/api/path";
 import { exists, readDir, readTextFile } from "@tauri-apps/plugin-fs";
 import z from "zod";
 import type { CharacterPack } from "@/types/character-pack";
-import { getCharacterPackPath } from "./path";
 import { CharacterPackJsonSchema } from "./schema/character-pack-json.schema";
 
-export async function getCharacterPackData(): Promise<CharacterPack[]> {
-  const packPath = await getCharacterPackPath();
-
-  console.log("packPath: ", packPath);
+export async function getCharacterPackData(
+  packPath: string,
+): Promise<CharacterPack[]> {
+  console.log("base packPath: ", packPath);
 
   const packFolders = await readDir(packPath);
 
@@ -20,9 +19,6 @@ export async function getCharacterPackData(): Promise<CharacterPack[]> {
 
     const packJsonPath = await join(packPath, folder.name, "pack.json");
     const spritePath = await join(packPath, folder.name, "sprite.png");
-
-    console.log("packJsonPath: ", packJsonPath);
-    console.log("spritePath: ", spritePath);
 
     const packJsonExists = await exists(packJsonPath);
     const spriteExists = await exists(spritePath);

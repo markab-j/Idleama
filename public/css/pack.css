@@ -1,0 +1,16 @@
+body {
+  font-family: sans-serif;
+  padding: 1rem;
+}
+
+#packs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pack-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
