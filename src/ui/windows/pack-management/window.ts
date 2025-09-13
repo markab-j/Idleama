@@ -8,7 +8,6 @@ import {
   type PackInitPayload,
   PackManagementEvent,
 } from "./event";
-import { LogicalPosition } from "@tauri-apps/api/dpi";
 
 export async function createPackManagementWindow(): Promise<void> {
   let packManagementWindow = await WebviewWindow.getByLabel(
