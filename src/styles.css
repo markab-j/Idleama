@@ -44,7 +44,7 @@ body {
   height: 100%;
   opacity: 0%;
   display: flex;
-  gap: 2px;
+  gap: 4px;
   pointer-events: none;
   transition: opacity 300ms ease-in-out, background 300ms ease-in-out;
 }
@@ -52,22 +52,23 @@ body {
 .title-bar-container:hover .title-bar {
   padding: 4px;
   opacity: 100%;
-  background-color: oklch(0.35 0.03 260 / 0.5);
+  background-color: rgba(224, 220, 237, 0.3);
   pointer-events: all;
 }
 
 .menu-btn {
   width: 24px;
   height: 24px;
-  border: 2px solid oklch(0.8 0.04 260);
-  border-radius: 0px;
-  background-color: oklch(0.95 0.02 260);
+  border: 2px solid #c9c1e2;
+  border-radius: 4px;
+  background-color: #f2f0f7;
   cursor: pointer;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
+  box-shadow: 3px 3px 0px #c9c1e2;
   transition: background-color 150ms ease-out, transform 100ms ease-out, box-shadow 150ms ease-out;
 }
 
@@ -79,14 +80,15 @@ body {
 }
 
 .menu-btn:hover {
-  background-color: oklch(0.92 0.03 260);
+  background-color: #fff;
 }
 
 .menu-btn:active {
-  background-color: oklch(0.89 0.035 260);
-  transform: translateY(1px);
+  background-color: #f2f0f7;
+  transform: translate(3px, 3px);
+  box-shadow: none;
 }
 
 .menu-btn:focus-visible {
-  outline: none;
+  outline: 2px solid #aee6e0;
 }

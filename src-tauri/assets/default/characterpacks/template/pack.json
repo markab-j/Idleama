@@ -1,7 +1,13 @@
 {
-    "packName": "template",
+    "name": "template",
+    "author": "markab-j",
+    "description": "Default Character.",
     "version": "0.0.1",
-    "characterData": {
+    "character": {
         "name": "templu"
+    },
+    "sprite": {
+        "width": 16,
+        "height": 32
     }
 }

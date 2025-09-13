@@ -11,7 +11,7 @@ export async function loadCharacterPacks(k: KAPLAYCtx): Promise<void> {
   const externalCharacterPackPath = await getCharacterPackPath();
 
   await Promise.all([
-    loadPacks(k, defaultCharacterPackPath),
+    loadPacks(k, defaultCharacterPackPath, true),
     loadPacks(k, externalCharacterPackPath),
   ]);
 
@@ -21,17 +21,18 @@ export async function loadCharacterPacks(k: KAPLAYCtx): Promise<void> {
   );
 }
 
-async function loadPacks(k: KAPLAYCtx, packPath: string): Promise<void> {
+async function loadPacks(
+  k: KAPLAYCtx,
+  packPath: string,
+  autoEnabled: boolean = false,
+): Promise<void> {
   const characterPacks = await getCharacterPackData(packPath);
 
   for (const pack of characterPacks) {
     console.log("Pack Load: ", pack);
 
-    k.loadSpriteAtlas(
-      pack.spritePath,
-      getCharacterSpriteAtlasData(pack.pack.packName),
-    );
+    k.loadSpriteAtlas(pack.spritePath, getCharacterSpriteAtlasData(pack));
 
-    characterPackManager.add(pack);
+    characterPackManager.add(pack, autoEnabled);
   }
 }

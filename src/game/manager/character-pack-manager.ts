@@ -1,25 +1,41 @@
-import type { CharacterPack } from "@/types/character-pack";
-
-type CharacterPackState = CharacterPack & { enabled: boolean };
+import type { CharacterPack, CharacterPackState } from "@/types/character-pack";
+import { EventManager } from "./event-manager";
 
 class CharacterPackManager {
   private readonly characterPacks: CharacterPackState[];
 
   constructor() {
     this.characterPacks = [];
+    this.initializeListener();
   }
 
-  getAll(): CharacterPackState[] {
+  getAllState(): CharacterPackState[] {
     return [...this.characterPacks];
   }
 
-  getAllEnabled(): CharacterPackState[] {
+  getAllEnabled(): CharacterPack[] {
     return [...this.characterPacks.filter((pack) => pack.enabled)];
   }
 
   add(characterPack: CharacterPack, enabled: boolean = false): void {
     this.characterPacks.push({ ...characterPack, enabled });
     this.characterPacks.sort();
+  }
+
+  initializeListener() {
+    EventManager.on('packs:enable_update', (e) => {
+      this.updateState(e.packName, e.enabled);
+    })
+  }
+
+  updateState(packName: string, enabled: boolean): void {
+    const pack = this.characterPacks.find(
+      (pack) => pack.name === packName,
+    );
+
+    if (pack) {
+      pack.enabled = enabled;
+    }
   }
 
   loadedPackCount(): number {

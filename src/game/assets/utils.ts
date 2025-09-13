@@ -1,18 +1,20 @@
 import type { SpriteAnim, SpriteAtlasData } from "kaplay";
+import type { CharacterPack } from "@/types/character-pack";
 import { CharacterAnim } from "../character/enums/anim.enum";
-import { CHARACTER_SPRITE_HEIGHT, CHARACTER_SPRITE_WIDTH } from "./constants";
 
 export function getCharacterSpriteKey(id: string): string {
   return `character_${id}`;
 }
 
-export function getCharacterSpriteAtlasData(id: string): SpriteAtlasData {
+export function getCharacterSpriteAtlasData(
+  pack: CharacterPack,
+): SpriteAtlasData {
   return {
-    [getCharacterSpriteKey(id)]: {
+    [getCharacterSpriteKey(pack.name)]: {
       x: 0,
       y: 0,
-      width: CHARACTER_SPRITE_WIDTH * 4,
-      height: CHARACTER_SPRITE_HEIGHT * 10,
+      width: pack.sprite.width * 4,
+      height: pack.sprite.height * 10,
       sliceX: 4,
       sliceY: 10,
       anims: {

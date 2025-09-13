@@ -1,5 +1,6 @@
 import z from "zod";
 import { CharacterDataSchema } from "./character-data.schema";
+import { SpriteDataSchema } from "./sprite-data.schema";
 
 export const CharacterPackJsonSchema = z.preprocess(
   (v) => {
@@ -10,9 +11,12 @@ export const CharacterPackJsonSchema = z.preprocess(
     return v;
   },
   z.object({
-    packName: z.string().min(1),
+    name: z.string().min(1),
+    author: z.string().min(1).optional(),
+    description: z.string().min(1).optional(),
     version: z.string(),
-    characterData: CharacterDataSchema,
+    character: CharacterDataSchema,
+    sprite: SpriteDataSchema,
   }),
 );
 

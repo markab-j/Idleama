@@ -1,8 +1,6 @@
-import { emit } from "@tauri-apps/api/event";
-import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { exit } from "@tauri-apps/plugin-process";
 import { createMenuButton } from "./utils";
-import { characterPackManager } from "@/game/manager/character-pack-manager";
+import { createPackManagementWindow } from "./windows/pack-management/window";
 
 export async function initTitleBar(): Promise<void> {
   const menus = document.getElementById("menu");
@@ -33,21 +31,7 @@ async function createOptionButton(): Promise<HTMLButtonElement> {
   const btn = await createMenuButton("Gear");
 
   btn.addEventListener("click", async () => {
-    const webView = new WebviewWindow("pack", {
-      url: "pack.html",
-      width: 400,
-      height: 600,
-      decorations: false,
-    });
-
-    webView.once("tauri://created", () => {
-      console.log("pack.html 창 생성 완료");
-        emit("packs:update", { packs: characterPackManager.getAll() });
-    });
-
-    webView.once("tauri://error", (e) => {
-      console.error("창 생성 실패:", e);
-    });
+    await createPackManagementWindow();
   });
 
   return btn;

@@ -35,7 +35,7 @@ export async function getCharacterPackData(
       const characterPackJson = result.data;
 
       loadedPacks.push({
-        pack: characterPackJson,
+        ...characterPackJson,
         spritePath: convertFileSrc(spritePath),
       });
     }

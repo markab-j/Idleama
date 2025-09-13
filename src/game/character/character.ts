@@ -35,7 +35,7 @@ export class Character {
     this.gameObj.onStateEnter(
       CharacterState.Idle,
       (beforeDirection?: DirectionType) => {
-        console.log(`${this.gameObj.id}: Enter ${CharacterState.Idle}`);
+        // console.log(`${this.gameObj.id}: Enter ${CharacterState.Idle}`);
 
         this.updateIdleAnim(beforeDirection);
         this.gameObj.wait(1, () => this.gameObj.play(CharacterAnim.IDLE_DOWN));
@@ -46,7 +46,7 @@ export class Character {
     );
 
     this.gameObj.onStateEnter(CharacterState.Walk, () => {
-      console.log(`${this.gameObj.id}: Enter ${CharacterState.Walk}`);
+      // console.log(`${this.gameObj.id}: Enter ${CharacterState.Walk}`);
 
       const minPos = this.gameObj.pos.sub(this.MOVE_RADIUS, this.MOVE_RADIUS);
       const maxPos = this.gameObj.pos.add(this.MOVE_RADIUS, this.MOVE_RADIUS);

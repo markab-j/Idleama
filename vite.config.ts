@@ -1,7 +1,7 @@
+import { resolve } from "path";
 import { defineConfig } from "vite";
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-// @ts-expect-error process is a Node.js global
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
@@ -31,5 +31,12 @@ export default defineConfig(async ({ mode }) => ({
   esbuild: {
     pure: mode === 'production' ? ['console.log'] : [],
   },
-  publicDir: 'public'
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "index.html"),
+        pack: resolve(__dirname, "pack.html"),
+      }
+    }
+  }
 }));

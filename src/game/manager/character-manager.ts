@@ -1,0 +1,46 @@
+import type { KAPLAYCtx } from "kaplay";
+import type { Character } from "@/game/character/character";
+import { CharacterFactory } from "../character/character.factory";
+import { characterPackManager } from "./character-pack-manager";
+import { EventManager } from "./event-manager";
+
+export class CharacterManager {
+  private readonly factory: CharacterFactory;
+
+  private readonly characterMap: Map<string, Character>;
+
+  constructor(private readonly k: KAPLAYCtx) {
+    console.log("CharacterManager init...");
+    this.characterMap = new Map();
+    this.factory = new CharacterFactory(this.k);
+    this.initializedListener();
+    console.log("CharacterManager initialized");
+  }
+
+  public createEnabledCharacters() {
+    characterPackManager.getAllEnabled().forEach((pack) => {
+      const character = this.factory.create(pack.name, this.center);
+      this.characterMap.set(pack.name, character);
+    });
+  }
+
+  private initializedListener() {
+    EventManager.on("packs:enable_update", (e) => {
+      if (e.enabled) {
+        if (this.characterMap.has(e.packName)) return;
+        
+        const character = this.factory.create(e.packName, this.center);
+        this.characterMap.set(e.packName, character);
+      } else {
+        const character = this.characterMap.get(e.packName);
+        this.characterMap.delete(e.packName);
+        character?.gameObj.destroy();
+      }
+    });
+    console.log("Pack Enable Update Event Register");
+  }
+
+  private get center() {
+    return this.k.center().toFixed(0);
+  }
+}
