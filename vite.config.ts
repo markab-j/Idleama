@@ -35,7 +35,7 @@ export default defineConfig(async ({ mode }) => ({
     rollupOptions: {
       input: {
         main: resolve(__dirname, "index.html"),
-        pack: resolve(__dirname, "pack.html"),
+        pack: resolve(__dirname, "packs.html"),
       }
     }
   }
