@@ -1,18 +1,21 @@
 import type { KAPLAYCtx } from "kaplay";
-import { getCharacterPackData } from "@/data/character-pack";
+import { loadCharacterPackData } from "@/data/character-pack/load";
 import { getCharacterPackPath, getDefaultChraterPackPath } from "@/data/path";
 import { getCharacterSpriteAtlasData } from "@/game/assets/utils";
-import { characterPackManager } from "@/game/manager/character-pack-manager";
+import type { CharacterPackManager } from "@/game/manager/character-pack-manager";
 
-export async function loadCharacterPacks(k: KAPLAYCtx): Promise<void> {
+export async function loadCharacterPacks(
+  k: KAPLAYCtx,
+  characterPackManager: CharacterPackManager,
+): Promise<void> {
   console.log("load Character Packs...");
 
   const defaultCharacterPackPath = await getDefaultChraterPackPath();
   const externalCharacterPackPath = await getCharacterPackPath();
 
   await Promise.all([
-    loadPacks(k, defaultCharacterPackPath, true),
-    loadPacks(k, externalCharacterPackPath),
+    loadPacks(k, characterPackManager, defaultCharacterPackPath, true),
+    loadPacks(k, characterPackManager, externalCharacterPackPath),
   ]);
 
   console.log(
@@ -23,10 +26,11 @@ export async function loadCharacterPacks(k: KAPLAYCtx): Promise<void> {
 
 async function loadPacks(
   k: KAPLAYCtx,
+  characterPackManager: CharacterPackManager,
   packPath: string,
   autoEnabled: boolean = false,
 ): Promise<void> {
-  const characterPacks = await getCharacterPackData(packPath);
+  const characterPacks = await loadCharacterPackData(packPath);
 
   for (const pack of characterPacks) {
     console.log("Pack Load: ", pack);

@@ -2,17 +2,17 @@ import { convertFileSrc } from "@tauri-apps/api/core";
 import { join } from "@tauri-apps/api/path";
 import { exists, readDir, readTextFile } from "@tauri-apps/plugin-fs";
 import z from "zod";
-import type { CharacterPack } from "@/types/character-pack";
-import { CharacterPackJsonSchema } from "./schema/character-pack-json.schema";
+import { CharacterPackJsonSchema } from "@/data/schema/character-pack-json.schema";
+import type { CharacterPackData } from "@/types/character-pack";
 
-export async function getCharacterPackData(
+export async function loadCharacterPackData(
   packPath: string,
-): Promise<CharacterPack[]> {
+): Promise<CharacterPackData[]> {
   console.log("base packPath: ", packPath);
 
   const packFolders = await readDir(packPath);
 
-  const loadedPacks: CharacterPack[] = [];
+  const loadedPacks: CharacterPackData[] = [];
 
   for (const folder of packFolders) {
     if (!folder.isDirectory || folder.name.startsWith(".")) continue;

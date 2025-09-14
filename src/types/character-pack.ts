@@ -1,7 +1,7 @@
 import type { CharacterPackJson } from "@/data/schema/character-pack-json.schema";
 
-export type CharacterPack = CharacterPackJson & {
+export type CharacterPackData = CharacterPackJson & {
   spritePath: string;
 };
 
-export type CharacterPackState = CharacterPack & { enabled: boolean };
+export type CharacterPackState = CharacterPackData & { enabled: boolean };

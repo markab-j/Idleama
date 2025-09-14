@@ -1,5 +1,5 @@
 import type { SpriteAnim, SpriteAtlasData } from "kaplay";
-import type { CharacterPack } from "@/types/character-pack";
+import type { CharacterPackData } from "@/types/character-pack";
 import { CharacterAnim } from "../character/enums/anim.enum";
 
 export function getCharacterSpriteKey(id: string): string {
@@ -7,7 +7,7 @@ export function getCharacterSpriteKey(id: string): string {
 }
 
 export function getCharacterSpriteAtlasData(
-  pack: CharacterPack,
+  pack: CharacterPackData,
 ): SpriteAtlasData {
   return {
     [getCharacterSpriteKey(pack.name)]: {

@@ -28,7 +28,7 @@
       "csp": "img-src 'self' asset: http://asset.localhost",
       "assetProtocol": {
         "enable": true,
-        "scope": ["$DOCUMENT/idleama/**/*", "$RESOURCE/**"]
+        "scope": ["$DOCUMENT/idleama/**/*", "$RESOURCE/**", "$APPCONFIG/**"]
       }
     }
   },

@@ -1,6 +1,6 @@
 import { emitTo, listen, once } from "@tauri-apps/api/event";
 import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
-import { characterPackManager } from "@/game/manager/character-pack-manager";
+import type { CharacterPackManager } from "@/game/manager/character-pack-manager";
 import { EventManager } from "@/game/manager/event-manager";
 import { WindowLabel } from "@/ui/windows/constants";
 import {
@@ -9,7 +9,9 @@ import {
   PackManagementEvent,
 } from "./event";
 
-export async function createPackManagementWindow(): Promise<void> {
+export async function createPackManagementWindow(
+  characterPackManager: CharacterPackManager,
+): Promise<void> {
   let packManagementWindow = await WebviewWindow.getByLabel(
     WindowLabel.packManagement,
   );
