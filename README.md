@@ -1,13 +1,10 @@
-<p align="center">
+<div align="center">
   <img src="/docs/icon.png" alt="Idleama Icon" width="256">
-</p>
+</div>
 
 # Idleama
 
 A custom idle diorama that moves at the bottom of your PC desktop screen.
-
-[![Latest Release](https://img.shields.io/github/v/release/markab-j/Idleama)](https://github.com/markab-j/Idleama/releases)
-[![License](https://img.shields.io/github/license/markab-j/Idleama)](LICENSE)
 
 Idleama, a combination of 'Idle' and 'Diorama', is an application that lets you place your own custom characters on the bottom of your desktop to watch them move. It's designed for users who want to personalize their desktop in their own style.
 
@@ -31,7 +28,7 @@ This project is currently in its **Alpha version**, with only Minimum Viable Pro
 
 ### Installation (Alpha Version)
 
-1.  Go to the [GitHub Releases page](https://github.com/markab-j/Idleama/releases).
+1.  Go to the [Releases](https://gitlab.com/markab.j.nn/Idleama/-/releases).
 2.  From the `Assets` list of the latest version, download the `.zip` file that matches your operating system.
 3.  Unzip the downloaded file and run the `Idleama` executable.
 
