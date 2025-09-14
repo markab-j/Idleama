@@ -2,7 +2,7 @@ import mitt from "mitt";
 import type {
   PackEnablePayload,
   PackManagementEvent,
-} from "@/ui/windows/pack-management/event";
+} from "@/windows/pack-management/event";
 
 type GameEvents = {
   [PackManagementEvent.ENABLE_UPDATE]: PackEnablePayload;

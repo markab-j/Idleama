@@ -1,7 +1,7 @@
 import type { KAPLAYCtx } from "kaplay";
+import type { CharacterPackManager } from "@/feature/character-pack/character-pack.manager";
 import type { Character } from "@/game/character/character";
 import { CharacterFactory } from "../character/character.factory";
-import type { CharacterPackManager } from "./character-pack-manager";
 import { EventManager } from "./event-manager";
 
 export class CharacterManager {
@@ -21,9 +21,9 @@ export class CharacterManager {
   }
 
   public createEnabledCharacters() {
-    this.packManager.getAllEnabled().forEach((pack) => {
-      const character = this.factory.create(pack.name, this.center);
-      this.characterMap.set(pack.name, character);
+    this.packManager.getEnablePackNames().forEach((packName) => {
+      const character = this.factory.create(packName, this.center);
+      this.characterMap.set(packName, character);
     });
   }
 

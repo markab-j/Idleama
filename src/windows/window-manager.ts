@@ -1,0 +1,121 @@
+import { emitTo, listen, once } from "@tauri-apps/api/event";
+import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
+import {
+  currentMonitor,
+  getCurrentWindow,
+  type Monitor,
+  PhysicalSize,
+} from "@tauri-apps/api/window";
+import { moveWindow, Position } from "@tauri-apps/plugin-positioner";
+import type { CharacterPackManager } from "@/feature/character-pack/character-pack.manager";
+import { EventManager } from "@/game/manager/event-manager";
+import { WindowLabel } from "./constants";
+import {
+  type PackEnableEvent,
+  type PackInitPayload,
+  PackManagementEvent,
+} from "./pack-management/event";
+
+export class WindowManager {
+  constructor(private readonly characterPackManager: CharacterPackManager) {}
+
+  static async initMainWindow(): Promise<
+    Pick<Monitor, "size" | "scaleFactor">
+  > {
+    const monitor = await currentMonitor();
+
+    if (monitor === null) {
+      throw new Error("Display Not Detected");
+    }
+
+    console.log("monitor Size: ", {
+      size: monitor.size,
+      factor: monitor.scaleFactor,
+    });
+
+    const monitorSize = monitor.size;
+
+    const currentWindow = getCurrentWindow();
+
+    const scaledHeight = Math.floor(monitor.size.height / 4);
+
+    const newWindowSize = new PhysicalSize(monitorSize.width, scaledHeight);
+
+    await currentWindow.setSize(newWindowSize);
+
+    await moveWindow(Position.BottomCenter);
+    // const { workArea } = monitor;
+    // const newX = workArea.position.x + (workArea.size.width - newWindowSize.width) / 2;
+    // const newY = workArea.position.y + workArea.size.height - newWindowSize.height;
+
+    // await currentWindow.setPosition(new PhysicalPosition(newX, newY));
+
+    const { width, height } = await currentWindow.innerSize();
+
+    currentWindow.setResizable(false);
+
+    if (!currentWindow.isVisible()) {
+      currentWindow.show();
+    }
+
+    return {
+      size: new PhysicalSize(width, height),
+      scaleFactor: monitor.scaleFactor,
+    };
+  }
+
+  async packManagementWindow(): Promise<void> {
+    let packManagementWindow = await WebviewWindow.getByLabel(
+      WindowLabel.packManagement,
+    );
+
+    console.log("createPackManagementWindow", packManagementWindow);
+
+    if (packManagementWindow) {
+      packManagementWindow.setFocus();
+      return;
+    }
+
+    packManagementWindow = new WebviewWindow(WindowLabel.packManagement, {
+      url: "packs.html",
+      width: 400,
+      height: 600,
+      devtools: true,
+      transparent: true,
+      decorations: false,
+      shadow: false,
+    });
+
+    packManagementWindow.once("tauri://window-created", async () => {
+      await packManagementWindow.center();
+    });
+
+    once(PackManagementEvent.READY, async () => {
+      console.log(`${WindowLabel.packManagement} is Ready.`);
+      const packs = this.characterPackManager.getAll();
+      const enablePackNames = this.characterPackManager.getEnablePackNames();
+
+      await emitTo<PackInitPayload>(
+        WindowLabel.packManagement,
+        PackManagementEvent.INIT_WINDOW,
+        {
+          packs,
+          enablePackNames,
+        },
+      );
+      console.log(
+        `send data to ${WindowLabel.packManagement} Pack : `,
+        packs.length,
+      );
+    });
+
+    listen(PackManagementEvent.ENABLE_UPDATE, (e: PackEnableEvent) => {
+      console.log("Event Recieved");
+      EventManager.emit("packs:enable_update", e.payload);
+    });
+
+    packManagementWindow.listen("tauri://error", (e) => {
+      console.error("창 생성 실패:", e);
+    });
+  }
+}
