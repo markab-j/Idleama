@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/docs/icon.png" alt="Idleama Icon" width="512">
+  <img src="/docs/icon.png" alt="Idleama Icon" width="256">
 </p>
 
 # Idleama
