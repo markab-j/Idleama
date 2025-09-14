@@ -6,13 +6,19 @@ import { initGame } from "./game/init-game";
 import { CharacterManager } from "./game/manager/character-manager";
 import { CharacterPackManager } from "./game/manager/character-pack-manager";
 import { drawLevel } from "./game/map/draw-level";
+import { AssetLoader } from "./game/assets/asset-loader";
 
 async function main() {
+  // Init Window
   const { size, scaleFactor } = await initWindow();
 
   const width = size.width / scaleFactor;
   const height = size.height / scaleFactor;
 
+  // TODO
+  // Loading Screen
+
+  // Init
   await initPath();
   const k = await initGame(width, height);
 
@@ -22,7 +28,9 @@ async function main() {
   const characterPackManager = new CharacterPackManager(characterPackConfig);
 
   // Data Load
-  await loadAssets(k, characterPackManager);
+  const assetLoader = new AssetLoader(k, characterPackManager);
+
+  await assetLoader.load();
 
   // Prepare
   drawLevel(k);
