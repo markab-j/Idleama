@@ -2,7 +2,6 @@ import {
   currentMonitor,
   getCurrentWindow,
   type Monitor,
-  PhysicalPosition,
   PhysicalSize,
 } from "@tauri-apps/api/window";
 import { moveWindow, Position } from "@tauri-apps/plugin-positioner";
