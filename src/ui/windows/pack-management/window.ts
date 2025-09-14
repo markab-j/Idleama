@@ -31,7 +31,7 @@ export async function createPackManagementWindow(): Promise<void> {
     shadow: false,
   });
 
-  packManagementWindow.once('tauri://window-created', async () => {
+  packManagementWindow.once("tauri://window-created", async () => {
     await packManagementWindow.center();
   });
 
@@ -46,16 +46,16 @@ export async function createPackManagementWindow(): Promise<void> {
         packs,
       },
     );
-    console.log(`send data to ${WindowLabel.packManagement} Pack : `, packs.length);
+    console.log(
+      `send data to ${WindowLabel.packManagement} Pack : `,
+      packs.length,
+    );
   });
 
-  listen(
-    PackManagementEvent.ENABLE_UPDATE,
-    (e: PackEnableEvent) => {
-      console.log("Event Recieved");
-      EventManager.emit("packs:enable_update", e.payload);
-    },
-  );
+  listen(PackManagementEvent.ENABLE_UPDATE, (e: PackEnableEvent) => {
+    console.log("Event Recieved");
+    EventManager.emit("packs:enable_update", e.payload);
+  });
 
   packManagementWindow.listen("tauri://error", (e) => {
     console.error("창 생성 실패:", e);

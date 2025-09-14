@@ -1,15 +1,17 @@
 import { emitTo, once } from "@tauri-apps/api/event";
+import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import type { CharacterPackState } from "@/types/character-pack";
 import { WindowLabel } from "../constants";
 import { type PackInitEvent, PackManagementEvent } from "./event";
-import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log(`${WindowLabel.packManagement} Dom Loaded`);
 
-  const closeButton = document.getElementById('close-button') as HTMLButtonElement;
+  const closeButton = document.getElementById(
+    "close-button",
+  ) as HTMLButtonElement;
 
-  closeButton.addEventListener('click', async () =>{
+  closeButton.addEventListener("click", async () => {
     const webviewWindow = getCurrentWebviewWindow();
     await webviewWindow.close();
   });
@@ -66,7 +68,9 @@ function createPackElement(pack: CharacterPackState): HTMLElement {
       enabled: checkbox.checked,
     });
     packItem.classList.toggle("disabled", !checkbox.checked);
-    console.log(`Send to ${WindowLabel.main}. ${PackManagementEvent.ENABLE_UPDATE}`);
+    console.log(
+      `Send to ${WindowLabel.main}. ${PackManagementEvent.ENABLE_UPDATE}`,
+    );
   });
 
   return packItem;

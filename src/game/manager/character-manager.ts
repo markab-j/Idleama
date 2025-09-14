@@ -28,7 +28,7 @@ export class CharacterManager {
     EventManager.on("packs:enable_update", (e) => {
       if (e.enabled) {
         if (this.characterMap.has(e.packName)) return;
-        
+
         const character = this.factory.create(e.packName, this.center);
         this.characterMap.set(e.packName, character);
       } else {

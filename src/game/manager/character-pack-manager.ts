@@ -23,15 +23,13 @@ class CharacterPackManager {
   }
 
   initializeListener() {
-    EventManager.on('packs:enable_update', (e) => {
-      this.updateState(e.packName, e.enabled);
-    })
+    EventManager.on("packs:enable_update", (e) =>
+      this.updateState(e.packName, e.enabled),
+    );
   }
 
   updateState(packName: string, enabled: boolean): void {
-    const pack = this.characterPacks.find(
-      (pack) => pack.name === packName,
-    );
+    const pack = this.characterPacks.find((pack) => pack.name === packName);
 
     if (pack) {
       pack.enabled = enabled;
