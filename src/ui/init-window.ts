@@ -2,6 +2,7 @@ import {
   currentMonitor,
   getCurrentWindow,
   type Monitor,
+  PhysicalPosition,
   PhysicalSize,
 } from "@tauri-apps/api/window";
 import { moveWindow, Position } from "@tauri-apps/plugin-positioner";
@@ -31,6 +32,11 @@ export async function initWindow(): Promise<
   await currentWindow.setSize(newWindowSize);
 
   await moveWindow(Position.BottomCenter);
+  // const { workArea } = monitor;
+  // const newX = workArea.position.x + (workArea.size.width - newWindowSize.width) / 2;
+  // const newY = workArea.position.y + workArea.size.height - newWindowSize.height;
+
+  // await currentWindow.setPosition(new PhysicalPosition(newX, newY));
 
   const { width, height } = await currentWindow.innerSize();
 

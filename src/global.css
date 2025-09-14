@@ -7,4 +7,10 @@
 
 html {
   font-family: "Xcu", Consolas, "Courier New", "Lucida Console", monospace;
+  user-select: none;
+}
+
+img {
+  pointer-events: none;
+  user-select: none;
 }

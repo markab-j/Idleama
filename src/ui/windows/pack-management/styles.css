@@ -7,7 +7,6 @@ body {
     background-color: transparent;
     color: #6a6a8b;
     overflow: hidden;
-    user-select: none;
 }
 
 nav {
