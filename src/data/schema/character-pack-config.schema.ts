@@ -10,8 +10,7 @@ export const defaultCharacterConfig: CharacterPackConfigJson = {
 
 export const CharacterPackConfigJsonSchema = z.preprocess(
   (v) => {
-    if (typeof v === 'string')
-      return JSON.parse(v);
+    if (typeof v === "string") return JSON.parse(v);
 
     return v;
   },

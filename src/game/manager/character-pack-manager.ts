@@ -60,9 +60,9 @@ export class CharacterPackManager {
     else {
       await this.config.set(
         "enabled_packs",
-        [...this.config.get('enabled_packs').filter((v) => v !== packName)],
+        [...this.config.get("enabled_packs").filter((v) => v !== packName)],
         true,
-      )
+      );
     }
   }
 

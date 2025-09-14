@@ -1,12 +1,11 @@
 import { initTitleBar, initWindow } from "@/ui";
 import { CharacterPackConfig } from "./data/config/character-pack-config";
 import { initPath } from "./data/init";
-import { loadAssets } from "./game/assets/load";
+import { AssetLoader } from "./game/assets/asset-loader";
 import { initGame } from "./game/init-game";
 import { CharacterManager } from "./game/manager/character-manager";
 import { CharacterPackManager } from "./game/manager/character-pack-manager";
 import { drawLevel } from "./game/map/draw-level";
-import { AssetLoader } from "./game/assets/asset-loader";
 
 async function main() {
   // Init Window
