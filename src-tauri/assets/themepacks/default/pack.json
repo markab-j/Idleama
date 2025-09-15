@@ -1,0 +1,10 @@
+{
+    "name": "default",
+    "author": "markab-j",
+    "description": "Default theme.",
+    "version": "0.0.1",
+    "sprite": {
+        "width": 16,
+        "height": 16
+    }
+}

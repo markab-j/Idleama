@@ -40,7 +40,6 @@ export class CharacterManager {
         character?.gameObj.destroy();
       }
     });
-    console.log("Pack Enable Update Event Register");
   }
 
   private get center() {

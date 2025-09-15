@@ -4,53 +4,52 @@ import { exists, readDir, readTextFile } from "@tauri-apps/plugin-fs";
 import type { KAPLAYCtx } from "kaplay";
 import z from "zod";
 import { createLogger } from "@/core/utils/logger";
-import type { CharacterSpriteAtlasDataProvider } from "./character-sprite-atlas-data.provider";
-import type { CharacterPackLoader } from "./interfaces/character-pack-loader.interface";
-import {
-  type CharacterPack,
-  CharacterPackSchema,
-} from "./schema/character-pack.schema";
+import type { ThemeLoader } from "./interfaces/theme-loader.interface";
+import { type ThemePack, ThemePackSchema } from "./schema/theme.schema";
+import { toBackgroundSpriteKey } from "./utils";
 
-export class FileSystemCharacterPackLoader implements CharacterPackLoader {
-  private readonly logger = createLogger(FileSystemCharacterPackLoader.name);
+export class FileSystemThemeLoader implements ThemeLoader {
+  private readonly logger = createLogger(FileSystemThemeLoader.name);
 
-  constructor(
-    private readonly k: KAPLAYCtx,
-    private readonly spriteAtlasDataProvider: CharacterSpriteAtlasDataProvider,
-  ) {}
+  constructor(private readonly k: KAPLAYCtx) {}
 
-  async load(packPath: string): Promise<CharacterPack[]> {
+  async load(packPath: string): Promise<ThemePack[]> {
     this.logger.log("load start");
 
     const packFolders = await readDir(packPath);
+    this.logger.log(packFolders);
 
-    const loadedPacks: CharacterPack[] = [];
+    const loadedPacks: ThemePack[] = [];
 
     for (const folder of packFolders) {
       if (!folder.isDirectory || folder.name.startsWith(".")) continue;
 
       const packJsonPath = await join(packPath, folder.name, "pack.json");
-      const spritePath = await join(packPath, folder.name, "sprite.png");
+      const spritePath = await join(packPath, folder.name, "background.png");
 
       const packJsonExists = await exists(packJsonPath);
       const spriteExists = await exists(spritePath);
 
       if (packJsonExists && spriteExists) {
         const jsonContent = await readTextFile(packJsonPath);
-        const result = CharacterPackSchema.safeParse(jsonContent);
+        const result = ThemePackSchema.safeParse(jsonContent);
 
         if (!result.success) {
           this.logger.warn(z.prettifyError(result.error));
           continue;
         }
 
-        const characterPack = result.data;
+        const themePack = result.data;
 
-        loadedPacks.push(characterPack);
+        loadedPacks.push(themePack);
 
-        this.k.loadSpriteAtlas(
+        await this.k.loadSprite(
+          toBackgroundSpriteKey(themePack.name),
           convertFileSrc(spritePath),
-          this.spriteAtlasDataProvider.get8AxisAtlasData(characterPack),
+          {
+            sliceX: 11,
+            sliceY: 7,
+          },
         );
       }
     }

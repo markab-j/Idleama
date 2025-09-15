@@ -1,15 +1,10 @@
 import z from "zod";
+import { parseToObjectIfString } from "@/core/utils/json";
 import { CharacterDataSchema } from "./character-data.schema";
 import { SpriteDataSchema } from "./sprite-data.schema";
 
 export const CharacterPackSchema = z.preprocess(
-  (v) => {
-    if (typeof v === "string") {
-      return JSON.parse(v);
-    }
-
-    return v;
-  },
+  parseToObjectIfString,
   z.object({
     name: z.string().min(1),
     author: z.string().min(1).optional(),

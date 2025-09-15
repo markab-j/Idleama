@@ -1,6 +1,6 @@
 import { emitTo, once } from "@tauri-apps/api/event";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
-import type { CharacterPack } from "@/feature/character-pack/schema/character-pack-json.schema";
+import type { CharacterPack } from "@/feature/character-pack/schema/character-pack.schema";
 import { WindowLabel } from "../constants";
 import {
   type PackInitEvent,

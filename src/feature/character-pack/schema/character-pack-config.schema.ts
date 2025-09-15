@@ -1,11 +1,8 @@
 import z from "zod";
+import { parseToObjectIfString } from "@/core/utils/json";
 
 export const CharacterPackConfigSchema = z.preprocess(
-  (v) => {
-    if (typeof v === "string") return JSON.parse(v);
-
-    return v;
-  },
+  parseToObjectIfString,
   z.object({
     enabled_packs: z.string().array(),
   }),

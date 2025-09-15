@@ -1,6 +1,6 @@
 import type { SpriteAnim, SpriteAtlasData } from "kaplay";
 import { CharacterAnim } from "@/game/character/enums/anim.enum";
-import type { CharacterPack } from "./schema/character-pack-json.schema";
+import type { CharacterPack } from "./schema/character-pack.schema";
 import { toCharacterSpriteKey } from "./utils";
 
 export class CharacterSpriteAtlasDataProvider {

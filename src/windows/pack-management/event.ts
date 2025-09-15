@@ -1,5 +1,5 @@
 import type { Event } from "@tauri-apps/api/event";
-import type { CharacterPack } from "@/feature/character-pack/schema/character-pack-json.schema";
+import type { CharacterPack } from "@/feature/character-pack/schema/character-pack.schema";
 
 export const PackManagementEvent = {
   READY: "packs:ready",

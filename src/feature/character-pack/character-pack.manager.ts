@@ -5,7 +5,7 @@ import type { PackEnablePayload } from "@/windows/pack-management/event";
 import type { CharacterPackPathProvider } from "./character-pack-path.provider";
 import type { CharacterPackLoader } from "./interfaces/character-pack-loader.interface";
 import type { CharacterPackConfigStore } from "./interfaces/chracter-pack-config-store.interface";
-import type { CharacterPack } from "./schema/character-pack-json.schema";
+import type { CharacterPack } from "./schema/character-pack.schema";
 
 export class CharacterPackManager {
   private readonly logger = createLogger(CharacterPackManager.name);
