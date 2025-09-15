@@ -3,7 +3,6 @@ import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
 import {
   currentMonitor,
   getCurrentWindow,
-  type Monitor,
   PhysicalSize,
 } from "@tauri-apps/api/window";
 import { moveWindow, Position } from "@tauri-apps/plugin-positioner";
@@ -55,10 +54,10 @@ export class WindowManager {
 
     const { width, height } = await currentWindow.innerSize();
 
-    currentWindow.setResizable(false);
+    await currentWindow.setResizable(false);
 
-    if (!currentWindow.isVisible()) {
-      currentWindow.show();
+    if (!await currentWindow.isVisible()) {
+      await currentWindow.show();
     }
 
     return {

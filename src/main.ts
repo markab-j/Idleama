@@ -29,6 +29,7 @@ async function main() {
     characterPackPathProvider,
     themePackPathProvider,
   );
+  
   await pathService.initAppPath();
 
   const gameManager = new GameManager(appWindowContext);
