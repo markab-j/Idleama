@@ -23,7 +23,7 @@ export class ThemePackManager {
     await this.reload();
 
     const currentPack = this.themePacks.find(
-      (pack) => pack.name === this.config.getCurrentPackName(),
+      (pack) => pack.meta.name === this.config.getCurrentPackName(),
     );
 
     if (currentPack) this.currentPack = currentPack;
@@ -43,6 +43,6 @@ export class ThemePackManager {
       externalThemePacks,
     );
 
-    sortBy(this.themePacks, ["name"]);
+    sortBy(this.themePacks, [(pack) => pack.meta.name]);
   }
 }

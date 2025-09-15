@@ -6,7 +6,7 @@ export class BackGroundRenderer {
   constructor(private readonly k: KAPLAYCtx) {}
 
   render(pack: ThemePack) {
-    const key = toBackgroundSpriteKey(pack.name);
+    const key = toBackgroundSpriteKey(pack.meta.name);
 
     this.k.addLevel(this.generateMap(this.k, this.k.width(), this.k.height()), {
       tileWidth: pack.sprite.width,

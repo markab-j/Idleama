@@ -44,7 +44,7 @@ export class FileSystemThemeLoader implements ThemeLoader {
         loadedPacks.push(themePack);
 
         await this.k.loadSprite(
-          toBackgroundSpriteKey(themePack.name),
+          toBackgroundSpriteKey(themePack.meta.name),
           convertFileSrc(spritePath),
           {
             sliceX: 11,
