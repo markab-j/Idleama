@@ -14,6 +14,7 @@ import { CharacterManager } from "./game/manager/character-manager";
 import { MainUIFactory } from "./ui/main/ui.factory";
 import { MainUIManager } from "./ui/main/ui.manager";
 import { WindowManager } from "./windows/window-manager";
+import { createLogger } from "./core/utils/logger";
 
 async function main() {
   // Init Window
@@ -76,6 +77,8 @@ async function main() {
   characterManager.createEnabledCharacters();
 }
 
+const mainLogger = createLogger("Main");
+
 main()
-  .then(() => console.log("Initialized"))
-  .catch((e) => console.error(e));
+  .then(() => mainLogger.log("Initialized"))
+  .catch((e) => mainLogger.error(e));

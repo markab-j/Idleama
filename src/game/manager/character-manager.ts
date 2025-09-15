@@ -14,18 +14,18 @@ export class CharacterManager {
     private readonly k: KAPLAYCtx,
     private readonly packManager: CharacterPackManager,
   ) {
-    console.log("CharacterManager init...");
     this.characterMap = new Map();
     this.factory = new CharacterFactory(this.k);
     this.initializedListener();
-    console.log("CharacterManager initialized");
   }
 
   public createEnabledCharacters() {
-    this.packManager.getEnablePackNames().forEach((packName) => {
+    const enabledPacks = this.packManager.getEnablePackNames();
+
+    for (const packName of enabledPacks) {
       const character = this.factory.create(packName, this.center);
       this.characterMap.set(packName, character);
-    });
+    }
   }
 
   private initializedListener() {

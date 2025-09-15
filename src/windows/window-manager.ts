@@ -17,8 +17,11 @@ import {
   type ThemePackChangeEvent,
 } from "./pack-management/event";
 import type { AppWindowContext } from "./types";
+import { createLogger } from "@/core/utils/logger";
 
 export class WindowManager {
+  private static readonly logger = createLogger(WindowManager.name);
+
   constructor(
     private readonly characterPackManager: CharacterPackManager,
     private readonly themePackManager: ThemePackManager,
@@ -31,7 +34,7 @@ export class WindowManager {
       throw new Error("Display Not Detected");
     }
 
-    console.log("monitor Size: ", {
+    WindowManager.logger.log("monitor Size: ", {
       size: monitor.size,
       factor: monitor.scaleFactor,
     });
@@ -72,7 +75,7 @@ export class WindowManager {
       WindowLabel.packManagement,
     );
 
-    console.log("createPackManagementWindow", packManagementWindow);
+    WindowManager.logger.log("createPackManagementWindow", packManagementWindow);
 
     if (packManagementWindow) {
       packManagementWindow.setFocus();
@@ -94,7 +97,7 @@ export class WindowManager {
     });
 
     once(PackManagementEvent.READY, async () => {
-      console.log(`${WindowLabel.packManagement} is Ready.`);
+      WindowManager.logger.log(`${WindowLabel.packManagement} is Ready.`);
       const packs = this.characterPackManager.getAll();
       const enablePackNames = this.characterPackManager.getEnablePackNames();
 
@@ -111,7 +114,7 @@ export class WindowManager {
           currentThemePack,
         },
       );
-      console.log(
+      WindowManager.logger.log(
         `send data to ${WindowLabel.packManagement} Pack : `,
         packs.length,
       );
@@ -132,7 +135,7 @@ export class WindowManager {
     });
 
     packManagementWindow.listen("tauri://error", (e) => {
-      console.error("창 생성 실패:", e);
+      WindowManager.logger.error("창 생성 실패:", e);
     });
   }
 }
