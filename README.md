@@ -2,6 +2,10 @@
   <img src="/docs/icon.png" alt="Idleama Icon" width="256">
 </div>
 
+![LICENSE](https://img.shields.io/github/license/markab-j/Idleama)
+![Release](https://img.shields.io/github/v/release/markab-j/Idleama)
+![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/markab-j/Idleama/latest/total)
+
 # Idleama
 
 A custom idle diorama that moves at the bottom of your PC desktop screen.
@@ -30,9 +34,7 @@ This project is currently in its **Alpha version**, with only Minimum Viable Pro
 
 1.  Go to the [Releases](https://gitlab.com/markab.j.nn/Idleama/-/releases).
 2.  From the `Assets` list of the latest version, download the `.zip` file that matches your operating system.
-3.  Unzip the downloaded file and run the `Idleama` executable.
-
-> **Note**: The official version is planned for a future release on Steam.
+3.  Unzip the downloaded file and run the `Idleama Setup` executable.
 
 ## 🤝 Contributing
 
