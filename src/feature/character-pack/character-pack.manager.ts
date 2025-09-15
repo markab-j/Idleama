@@ -33,7 +33,7 @@ export class CharacterPackManager {
 
     this.logger.log("enabledPacks", enabled_packs);
     return this.characterPacks
-      .map((pack) => pack.name)
+      .map((pack) => pack.meta.name)
       .filter((name) => enabled_packs.includes(name));
   }
 
@@ -60,7 +60,7 @@ export class CharacterPackManager {
       externalPacks,
     );
 
-    sortBy(this.characterPacks, ["name"]);
+    sortBy(this.characterPacks, [(pack) => pack.meta.name]);
     this.logger.log("load success. count:", this.characterPacks.length);
   }
 

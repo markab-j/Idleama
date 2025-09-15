@@ -6,7 +6,7 @@ import { toCharacterSpriteKey } from "./utils";
 export class CharacterSpriteAtlasDataProvider {
   get8AxisAtlasData(pack: CharacterPack): SpriteAtlasData {
     return {
-      [toCharacterSpriteKey(pack.name)]: {
+      [toCharacterSpriteKey(pack.meta.name)]: {
         x: 0,
         y: 0,
         width: pack.sprite.width * 4,
