@@ -1,6 +1,6 @@
 import type { Event } from "@tauri-apps/api/event";
 import type { CharacterPack } from "@/feature/character-pack/schema/character-pack.schema";
-import type { ThemePack } from "@/feature/theme-pack/schema/theme-pack.schema";
+import type { ThemePack } from "@/feature/theme-pack/types/theme-pack.type";
 
 export const PackManagementEvent = {
   READY: "pack-management:ready",
@@ -18,9 +18,15 @@ export type PackManagementInitPayload = {
 
 export type PackManagementInitEvent = Event<PackManagementInitPayload>;
 
-export type PackEnablePayload = {
+export type CharacterPackEnablePayload = {
   packName: string;
   enabled: boolean;
 };
 
-export type PackEnableEvent = Event<PackEnablePayload>;
+export type CharacterPackEnableEvent = Event<CharacterPackEnablePayload>;
+
+export type ThemePackChangePayload = {
+  themePack: ThemePack;
+};
+
+export type ThemePackChangeEvent = Event<ThemePackChangePayload>;

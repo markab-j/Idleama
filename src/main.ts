@@ -5,10 +5,10 @@ import { CharacterSpriteAtlasDataProvider } from "./feature/character-pack/chara
 import { FileSystemCharacterPackLoader } from "./feature/character-pack/fs-character-pack.loader";
 import { FileSystemCharacterPackConfigStore } from "./feature/character-pack/fs-character-pack-config.store";
 import { GameManager } from "./feature/game/game.manager";
-import { BackGroundRenderer } from "./feature/theme-pack/background.renderer";
 import { FileSystemThemeLoader } from "./feature/theme-pack/fs-theme.loader";
+import { FileSystemThemePackConfigStore } from "./feature/theme-pack/fs-theme-pack-config.store";
 import { ThemePackManager } from "./feature/theme-pack/theme.manager";
-import { FileSystemThemePackConfigStore } from "./feature/theme-pack/theme-pack-config.store";
+import { ThemeRenderer } from "./feature/theme-pack/theme.renderer";
 import { ThemePackPathProvider } from "./feature/theme-pack/theme-pack-path.provider";
 import { CharacterManager } from "./game/manager/character-manager";
 import { MainUIFactory } from "./ui/main/ui.factory";
@@ -29,7 +29,7 @@ async function main() {
     characterPackPathProvider,
     themePackPathProvider,
   );
-  
+
   await pathService.initAppPath();
 
   const gameManager = new GameManager(appWindowContext);
@@ -57,7 +57,7 @@ async function main() {
   const themePackManager = new ThemePackManager(
     themeLoader,
     themePackConfigStore,
-    new BackGroundRenderer(k),
+    new ThemeRenderer(k),
     themePackPathProvider,
   );
   await themePackManager.init();

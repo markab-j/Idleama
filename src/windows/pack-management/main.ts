@@ -1,7 +1,7 @@
 import { emitTo, once } from "@tauri-apps/api/event";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import type { CharacterPack } from "@/feature/character-pack/schema/character-pack.schema";
-import type { ThemePack } from "@/feature/theme-pack/schema/theme-pack.schema";
+import type { ThemePackMetadata } from "@/feature/theme-pack/schema/theme-pack-metadata.schema";
 import { WindowLabel } from "../constants";
 import { PackManagementEvent, type PackManagementInitEvent } from "./event";
 
@@ -9,7 +9,7 @@ type PackTab = "character" | "theme";
 
 let allCharacterPacks: CharacterPack[] = [];
 let enabledCharacterPackNames: Set<string> = new Set();
-let allThemePacks: ReadonlyArray<Readonly<ThemePack>> = [];
+let allThemePacks: ReadonlyArray<Readonly<ThemePackMetadata>> = [];
 let currentThemeName: string = "";
 
 let activeTab: PackTab = "character";
@@ -136,12 +136,12 @@ function createCharacterPackElement(
 }
 
 function createThemePackElement(
-  pack: ThemePack,
+  themePack: ThemePackMetadata,
   isCurrent: boolean,
 ): HTMLElement {
-  const packName = pack.meta.name;
+  const packName = themePack.meta.name;
   const elementId = `pack-radio-${packName.replace(/\s+/g, "-")}`;
-  const packItem = createPackItemBase(pack);
+  const packItem = createPackItemBase(themePack);
 
   const controlHtml = `
     <div class="checkbox-container">
@@ -157,7 +157,7 @@ function createThemePackElement(
       radio.checked = true;
       currentThemeName = packName;
       await emitTo(WindowLabel.main, PackManagementEvent.THEME_PACK_CHANGE, {
-        packName: packName,
+        themePack,
       });
     }
   });
@@ -165,7 +165,9 @@ function createThemePackElement(
   return packItem;
 }
 
-function createPackItemBase(pack: CharacterPack | ThemePack): HTMLElement {
+function createPackItemBase(
+  pack: CharacterPack | ThemePackMetadata,
+): HTMLElement {
   const packItem = document.createElement("div");
   packItem.className = "pack-item";
   packItem.dataset.packName = pack.meta.name;

@@ -1,9 +1,9 @@
 import { sortBy } from "es-toolkit";
-import type { BackGroundRenderer } from "./background.renderer";
 import type { ThemeLoader } from "./interfaces/theme-loader.interface";
 import type { ThemePackConfigStore } from "./interfaces/theme-pack-config-store.interface";
-import type { ThemePack } from "./schema/theme-pack.schema";
+import type { ThemeRenderer } from "./theme.renderer";
 import type { ThemePackPathProvider } from "./theme-pack-path.provider";
+import type { ThemePack } from "./types/theme-pack.type";
 
 export class ThemePackManager {
   private themePacks: ThemePack[];
@@ -12,7 +12,7 @@ export class ThemePackManager {
   constructor(
     private readonly loader: ThemeLoader,
     private readonly config: ThemePackConfigStore,
-    private readonly backgroundRenderer: BackGroundRenderer,
+    private readonly backgroundRenderer: ThemeRenderer,
     private readonly pathProvider: ThemePackPathProvider,
   ) {
     this.themePacks = [];

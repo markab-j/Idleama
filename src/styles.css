@@ -1,11 +1,20 @@
 :root {
-  border-radius: 0px;
+  --top-border-sprite: url(assets/border.png);
+  --top-border-height: 32px;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+.canvas-top-border {
+  background-image: var(--top-border-sprite);
+  background-repeat: repeat-x;
+  background-position: bottom;
+  width: 100%;
+  height: var(--top-border-height);
 }
 
 canvas {
@@ -52,7 +61,6 @@ body {
 .title-bar-container:hover .title-bar {
   padding: 4px;
   opacity: 100%;
-  background-color: rgba(224, 220, 237, 0.3);
   pointer-events: all;
 }
 

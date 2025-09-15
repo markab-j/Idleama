@@ -11,9 +11,10 @@ import type { ThemePackManager } from "@/feature/theme-pack/theme.manager";
 import { EventManager } from "@/game/manager/event-manager";
 import { WindowLabel } from "./constants";
 import {
-  type PackEnableEvent,
+  type CharacterPackEnableEvent,
   PackManagementEvent,
   type PackManagementInitPayload,
+  type ThemePackChangeEvent,
 } from "./pack-management/event";
 import type { AppWindowContext } from "./types";
 
@@ -56,7 +57,7 @@ export class WindowManager {
 
     await currentWindow.setResizable(false);
 
-    if (!await currentWindow.isVisible()) {
+    if (!(await currentWindow.isVisible())) {
       await currentWindow.show();
     }
 
@@ -118,13 +119,17 @@ export class WindowManager {
 
     listen(
       PackManagementEvent.CHARACTER_PACK_ENABLE_CHANGE,
-      (e: PackEnableEvent) => {
+      (e: CharacterPackEnableEvent) => {
         EventManager.emit(
           PackManagementEvent.CHARACTER_PACK_ENABLE_CHANGE,
           e.payload,
         );
       },
     );
+
+    listen(PackManagementEvent.THEME_PACK_CHANGE, (e: ThemePackChangeEvent) => {
+      EventManager.emit(PackManagementEvent.THEME_PACK_CHANGE, e.payload);
+    });
 
     packManagementWindow.listen("tauri://error", (e) => {
       console.error("창 생성 실패:", e);

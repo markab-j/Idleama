@@ -7,8 +7,12 @@ export class GameManager {
   constructor(appWindowContext: AppWindowContext) {
     const { size, scaleFactor } = appWindowContext;
 
+    const topBorderHeight = window
+      .getComputedStyle(document.documentElement)
+      .getPropertyValue("--top-border-height");
+
     const width = size.width / scaleFactor;
-    const height = size.height / scaleFactor;
+    const height = size.height / scaleFactor - parseInt(topBorderHeight, 10);
 
     const canvas = document.getElementById(
       "game-container",
@@ -20,6 +24,8 @@ export class GameManager {
       canvas,
       debug: true,
     });
+
+    this.k.setLayers(["bg", "obj"], "bg");
   }
 
   getGameCtx(): KAPLAYCtx {

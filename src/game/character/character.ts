@@ -29,8 +29,9 @@ export class Character {
     const initialPos = k.pos(pos.x, pos.y);
     const timer = k.timer();
     const state = k.state(CharacterState.Idle, allStates);
+    const layer = k.layer("obj");
 
-    this.gameObj = k.add([sprite, initialPos, timer, state]);
+    this.gameObj = k.add([sprite, initialPos, timer, state, layer]);
 
     this.gameObj.onStateEnter(
       CharacterState.Idle,

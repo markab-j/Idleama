@@ -5,7 +5,8 @@ import type { KAPLAYCtx } from "kaplay";
 import z from "zod";
 import { createLogger } from "@/core/utils/logger";
 import type { ThemeLoader } from "./interfaces/theme-loader.interface";
-import { type ThemePack, ThemePackSchema } from "./schema/theme-pack.schema";
+import { ThemePackMetadataSchema } from "./schema/theme-pack-metadata.schema";
+import type { ThemePack } from "./types/theme-pack.type";
 import { toBackgroundSpriteKey } from "./utils";
 
 export class FileSystemThemeLoader implements ThemeLoader {
@@ -26,13 +27,14 @@ export class FileSystemThemeLoader implements ThemeLoader {
 
       const packJsonPath = await join(packPath, folder.name, "pack.json");
       const spritePath = await join(packPath, folder.name, "background.png");
+      const borderPath = await join(packPath, folder.name, "border.png");
 
       const packJsonExists = await exists(packJsonPath);
       const spriteExists = await exists(spritePath);
 
       if (packJsonExists && spriteExists) {
         const jsonContent = await readTextFile(packJsonPath);
-        const result = ThemePackSchema.safeParse(jsonContent);
+        const result = ThemePackMetadataSchema.safeParse(jsonContent);
 
         if (!result.success) {
           this.logger.warn(z.prettifyError(result.error));
@@ -41,7 +43,10 @@ export class FileSystemThemeLoader implements ThemeLoader {
 
         const themePack = result.data;
 
-        loadedPacks.push(themePack);
+        loadedPacks.push({
+          ...themePack,
+          borderSprite: convertFileSrc(borderPath),
+        });
 
         await this.k.loadSprite(
           toBackgroundSpriteKey(themePack.meta.name),
