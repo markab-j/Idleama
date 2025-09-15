@@ -16,6 +16,7 @@ import {
   PackManagementEvent,
   type PackManagementInitPayload,
 } from "./pack-management/event";
+import type { AppWindowContext } from "./types";
 
 export class WindowManager {
   constructor(
@@ -23,9 +24,7 @@ export class WindowManager {
     private readonly themePackManager: ThemePackManager,
   ) {}
 
-  static async initMainWindow(): Promise<
-    Pick<Monitor, "size" | "scaleFactor">
-  > {
+  static async initMainWindow(): Promise<AppWindowContext> {
     const monitor = await currentMonitor();
 
     if (monitor === null) {

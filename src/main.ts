@@ -4,12 +4,12 @@ import { CharacterPackPathProvider } from "./feature/character-pack/character-pa
 import { CharacterSpriteAtlasDataProvider } from "./feature/character-pack/character-sprite-atlas-data.provider";
 import { FileSystemCharacterPackLoader } from "./feature/character-pack/fs-character-pack.loader";
 import { FileSystemCharacterPackConfigStore } from "./feature/character-pack/fs-character-pack-config.store";
+import { GameManager } from "./feature/game/game.manager";
 import { BackGroundRenderer } from "./feature/theme-pack/background.renderer";
 import { FileSystemThemeLoader } from "./feature/theme-pack/fs-theme.loader";
 import { ThemePackManager } from "./feature/theme-pack/theme.manager";
 import { FileSystemThemePackConfigStore } from "./feature/theme-pack/theme-pack-config.store";
 import { ThemePackPathProvider } from "./feature/theme-pack/theme-pack-path.provider";
-import { initGame } from "./game/init-game";
 import { CharacterManager } from "./game/manager/character-manager";
 import { MainUIFactory } from "./ui/main/ui.factory";
 import { MainUIManager } from "./ui/main/ui.manager";
@@ -17,10 +17,7 @@ import { WindowManager } from "./windows/window-manager";
 
 async function main() {
   // Init Window
-  const { size, scaleFactor } = await WindowManager.initMainWindow();
-
-  const width = size.width / scaleFactor;
-  const height = size.height / scaleFactor;
+  const appWindowContext = await WindowManager.initMainWindow();
 
   // TODO
   // Loading Screen
@@ -34,7 +31,9 @@ async function main() {
   );
   await pathService.initAppPath();
 
-  const k = await initGame(width, height);
+  const gameManager = new GameManager(appWindowContext);
+
+  const k = gameManager.getGameCtx();
 
   const characterPackConfigStore = new FileSystemCharacterPackConfigStore();
   await characterPackConfigStore.load();
