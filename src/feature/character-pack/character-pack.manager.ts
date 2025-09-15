@@ -1,7 +1,7 @@
 import { sortBy } from "es-toolkit";
 import { createLogger } from "@/core/utils/logger";
 import { EventManager } from "@/game/manager/event-manager";
-import type { CharacterPackEnablePayload } from "@/windows/pack-management/event";
+import { PackManagementEvent, type CharacterPackEnablePayload } from "@/windows/pack-management/event";
 import type { CharacterPackPathProvider } from "./character-pack-path.provider";
 import type { CharacterPackLoader } from "./interfaces/character-pack-loader.interface";
 import type { CharacterPackConfigStore } from "./interfaces/chracter-pack-config-store.interface";
@@ -17,14 +17,14 @@ export class CharacterPackManager {
     private readonly pathProvider: CharacterPackPathProvider,
   ) {
     this.characterPacks = [];
+    EventManager.on(
+      PackManagementEvent.CHARACTER_PACK_ENABLE_CHANGE,
+      async (e) => await this.changePackEnable(e),
+    );
   }
 
   async init() {
     await this.reload();
-    EventManager.on(
-      "packs:enable_update",
-      async (e) => await this.changePackEnable(e),
-    );
   }
 
   public getEnablePackNames(): string[] {
