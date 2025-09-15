@@ -6,6 +6,7 @@ import {
   PhysicalSize,
 } from "@tauri-apps/api/window";
 import { moveWindow, Position } from "@tauri-apps/plugin-positioner";
+import { createLogger } from "@/core/utils/logger";
 import type { CharacterPackManager } from "@/feature/character-pack/character-pack.manager";
 import type { ThemePackManager } from "@/feature/theme-pack/theme.manager";
 import { EventManager } from "@/game/manager/event-manager";
@@ -17,7 +18,6 @@ import {
   type ThemePackChangeEvent,
 } from "./pack-management/event";
 import type { AppWindowContext } from "./types";
-import { createLogger } from "@/core/utils/logger";
 
 export class WindowManager {
   private static readonly logger = createLogger(WindowManager.name);
@@ -75,7 +75,10 @@ export class WindowManager {
       WindowLabel.packManagement,
     );
 
-    WindowManager.logger.log("createPackManagementWindow", packManagementWindow);
+    WindowManager.logger.log(
+      "createPackManagementWindow",
+      packManagementWindow,
+    );
 
     if (packManagementWindow) {
       packManagementWindow.setFocus();

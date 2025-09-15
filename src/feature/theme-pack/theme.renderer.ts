@@ -11,7 +11,7 @@ export class ThemeRenderer {
   constructor(private readonly k: KAPLAYCtx) {
     this.cache = new Map();
     this.currentBackground = null;
-    
+
     EventManager.on(PackManagementEvent.THEME_PACK_CHANGE, (e) => {
       this.render(e.themePack);
     });

@@ -1,5 +1,6 @@
 import { CharacterPackManager } from "@/feature/character-pack/character-pack.manager";
 import { PathService } from "./core/service/path.service";
+import { createLogger } from "./core/utils/logger";
 import { CharacterPackPathProvider } from "./feature/character-pack/character-pack-path.provider";
 import { CharacterSpriteAtlasDataProvider } from "./feature/character-pack/character-sprite-atlas-data.provider";
 import { FileSystemCharacterPackLoader } from "./feature/character-pack/fs-character-pack.loader";
@@ -14,7 +15,6 @@ import { CharacterManager } from "./game/manager/character-manager";
 import { MainUIFactory } from "./ui/main/ui.factory";
 import { MainUIManager } from "./ui/main/ui.manager";
 import { WindowManager } from "./windows/window-manager";
-import { createLogger } from "./core/utils/logger";
 
 async function main() {
   // Init Window
