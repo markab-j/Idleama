@@ -8,6 +8,9 @@
 html {
   font-family: "Xcu", Consolas, "Courier New", "Lucida Console", monospace;
   user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 img {

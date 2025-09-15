@@ -1,5 +1,5 @@
 import type { KAPLAYCtx } from "kaplay";
-import type { ThemePack } from "./schema/theme.schema";
+import type { ThemePack } from "./schema/theme-pack.schema";
 import { toBackgroundSpriteKey } from "./utils";
 
 export class BackGroundRenderer {

@@ -2,7 +2,7 @@ import { sortBy } from "es-toolkit";
 import type { BackGroundRenderer } from "./background.renderer";
 import type { ThemeLoader } from "./interfaces/theme-loader.interface";
 import type { ThemePackConfigStore } from "./interfaces/theme-pack-config-store.interface";
-import type { ThemePack } from "./schema/theme.schema";
+import type { ThemePack } from "./schema/theme-pack.schema";
 import type { ThemePackPathProvider } from "./theme-pack-path.provider";
 
 export class ThemePackManager {
@@ -17,6 +17,14 @@ export class ThemePackManager {
   ) {
     this.themePacks = [];
     this.currentPack = this.themePacks[0];
+  }
+
+  getAll(): ReadonlyArray<Readonly<ThemePack>> {
+    return [...this.themePacks];
+  }
+
+  getCurrentPack(): Readonly<ThemePack> {
+    return this.currentPack;
   }
 
   async init(): Promise<void> {

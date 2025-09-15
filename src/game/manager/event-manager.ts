@@ -4,10 +4,8 @@ import type {
   PackManagementEvent,
 } from "@/windows/pack-management/event";
 
-type GameEvents = {
-  [PackManagementEvent.ENABLE_UPDATE]: PackEnablePayload;
+type AppEvents = {
+  [PackManagementEvent.CHARACTER_PACK_ENABLE_CHANGE]: PackEnablePayload;
 };
 
-export const EventManager = mitt<GameEvents>();
-
-EventManager.on("*", (e) => console.log("Event Emiited", e));
+export const EventManager = mitt<AppEvents>();

@@ -1,6 +1,7 @@
 import type { KAPLAYCtx } from "kaplay";
 import type { CharacterPackManager } from "@/feature/character-pack/character-pack.manager";
 import type { Character } from "@/game/character/character";
+import { PackManagementEvent } from "@/windows/pack-management/event";
 import { CharacterFactory } from "../character/character.factory";
 import { EventManager } from "./event-manager";
 
@@ -28,7 +29,7 @@ export class CharacterManager {
   }
 
   private initializedListener() {
-    EventManager.on("packs:enable_update", (e) => {
+    EventManager.on(PackManagementEvent.CHARACTER_PACK_ENABLE_CHANGE, (e) => {
       if (e.enabled) {
         if (this.characterMap.has(e.packName)) return;
 

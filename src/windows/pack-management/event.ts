@@ -1,18 +1,22 @@
 import type { Event } from "@tauri-apps/api/event";
 import type { CharacterPack } from "@/feature/character-pack/schema/character-pack.schema";
+import type { ThemePack } from "@/feature/theme-pack/schema/theme-pack.schema";
 
 export const PackManagementEvent = {
-  READY: "packs:ready",
-  INIT_WINDOW: "packs:init_window",
-  ENABLE_UPDATE: "packs:enable_update",
+  READY: "pack-management:ready",
+  INIT_WINDOW: "pack-management:init_window",
+  CHARACTER_PACK_ENABLE_CHANGE: "pack-management:character-pack-enable-change",
+  THEME_PACK_CHANGE: "pack-management:theme-pack-change",
 } as const;
 
-export type PackInitPayload = {
+export type PackManagementInitPayload = {
   packs: CharacterPack[];
   enablePackNames: string[];
+  themePacks: ReadonlyArray<Readonly<ThemePack>>;
+  currentThemePack: Readonly<ThemePack>;
 };
 
-export type PackInitEvent = Event<PackInitPayload>;
+export type PackManagementInitEvent = Event<PackManagementInitPayload>;
 
 export type PackEnablePayload = {
   packName: string;

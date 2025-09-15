@@ -5,7 +5,7 @@ import type { KAPLAYCtx } from "kaplay";
 import z from "zod";
 import { createLogger } from "@/core/utils/logger";
 import type { ThemeLoader } from "./interfaces/theme-loader.interface";
-import { type ThemePack, ThemePackSchema } from "./schema/theme.schema";
+import { type ThemePack, ThemePackSchema } from "./schema/theme-pack.schema";
 import { toBackgroundSpriteKey } from "./utils";
 
 export class FileSystemThemeLoader implements ThemeLoader {

@@ -8,16 +8,20 @@ import {
 } from "@tauri-apps/api/window";
 import { moveWindow, Position } from "@tauri-apps/plugin-positioner";
 import type { CharacterPackManager } from "@/feature/character-pack/character-pack.manager";
+import type { ThemePackManager } from "@/feature/theme-pack/theme.manager";
 import { EventManager } from "@/game/manager/event-manager";
 import { WindowLabel } from "./constants";
 import {
   type PackEnableEvent,
-  type PackInitPayload,
   PackManagementEvent,
+  type PackManagementInitPayload,
 } from "./pack-management/event";
 
 export class WindowManager {
-  constructor(private readonly characterPackManager: CharacterPackManager) {}
+  constructor(
+    private readonly characterPackManager: CharacterPackManager,
+    private readonly themePackManager: ThemePackManager,
+  ) {}
 
   static async initMainWindow(): Promise<
     Pick<Monitor, "size" | "scaleFactor">
@@ -95,12 +99,17 @@ export class WindowManager {
       const packs = this.characterPackManager.getAll();
       const enablePackNames = this.characterPackManager.getEnablePackNames();
 
-      await emitTo<PackInitPayload>(
+      const themePacks = this.themePackManager.getAll();
+      const currentThemePack = this.themePackManager.getCurrentPack();
+
+      await emitTo<PackManagementInitPayload>(
         WindowLabel.packManagement,
         PackManagementEvent.INIT_WINDOW,
         {
           packs,
           enablePackNames,
+          themePacks,
+          currentThemePack,
         },
       );
       console.log(
@@ -109,10 +118,15 @@ export class WindowManager {
       );
     });
 
-    listen(PackManagementEvent.ENABLE_UPDATE, (e: PackEnableEvent) => {
-      console.log("Event Recieved");
-      EventManager.emit("packs:enable_update", e.payload);
-    });
+    listen(
+      PackManagementEvent.CHARACTER_PACK_ENABLE_CHANGE,
+      (e: PackEnableEvent) => {
+        EventManager.emit(
+          PackManagementEvent.CHARACTER_PACK_ENABLE_CHANGE,
+          e.payload,
+        );
+      },
+    );
 
     packManagementWindow.listen("tauri://error", (e) => {
       console.error("창 생성 실패:", e);

@@ -54,15 +54,18 @@ async function main() {
   const themePackConfigStore = new FileSystemThemePackConfigStore();
   await themePackConfigStore.load();
 
-  const themeManager = new ThemePackManager(
+  const themePackManager = new ThemePackManager(
     themeLoader,
     themePackConfigStore,
     new BackGroundRenderer(k),
     themePackPathProvider,
   );
-  await themeManager.init();
+  await themePackManager.init();
 
-  const windowManager = new WindowManager(characterPackManager);
+  const windowManager = new WindowManager(
+    characterPackManager,
+    themePackManager,
+  );
   const mainUIFactory = new MainUIFactory(windowManager);
   const mainUIManager = new MainUIManager(mainUIFactory);
 
