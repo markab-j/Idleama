@@ -1,7 +1,10 @@
 import { sortBy } from "es-toolkit";
 import { createLogger } from "@/core/utils/logger";
 import { EventManager } from "@/game/manager/event-manager";
-import { PackManagementEvent, type CharacterPackEnablePayload } from "@/windows/pack-management/event";
+import {
+  type CharacterPackEnablePayload,
+  PackManagementEvent,
+} from "@/windows/pack-management/event";
 import type { CharacterPackPathProvider } from "./character-pack-path.provider";
 import type { CharacterPackLoader } from "./interfaces/character-pack-loader.interface";
 import type { CharacterPackConfigStore } from "./interfaces/chracter-pack-config-store.interface";

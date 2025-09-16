@@ -5,8 +5,20 @@
         "description": "Default theme.",
         "version": "0.0.1"
     },
-    "sprite": {
-        "width": 16,
-        "height": 16
+    "assets": {
+        "background": {
+            "src": "background.png",
+            "tile": {
+                "width": 16,
+                "height": 16
+            },
+            "columns": 14,
+            "rows": 7
+        },
+        "border": {
+            "src": "border.png",
+            "width": 16,
+            "height": 16
+        }
     }
 }

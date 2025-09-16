@@ -1,7 +1,7 @@
 import { emitTo, once } from "@tauri-apps/api/event";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import type { CharacterPack } from "@/feature/character-pack/schema/character-pack.schema";
-import type { ThemePackMetadata } from "@/feature/theme-pack/schema/theme-pack-metadata.schema";
+import type { ThemePack } from "@/feature/theme-pack/schema/theme-pack.schema";
 import { WindowLabel } from "../constants";
 import { PackManagementEvent, type PackManagementInitEvent } from "./event";
 
@@ -9,7 +9,7 @@ type PackTab = "character" | "theme";
 
 let allCharacterPacks: CharacterPack[] = [];
 let enabledCharacterPackNames: Set<string> = new Set();
-let allThemePacks: ReadonlyArray<Readonly<ThemePackMetadata>> = [];
+let allThemePacks: ReadonlyArray<Readonly<ThemePack>> = [];
 let currentThemeName: string = "";
 
 let activeTab: PackTab = "character";
@@ -136,7 +136,7 @@ function createCharacterPackElement(
 }
 
 function createThemePackElement(
-  themePack: ThemePackMetadata,
+  themePack: ThemePack,
   isCurrent: boolean,
 ): HTMLElement {
   const packName = themePack.meta.name;
@@ -165,9 +165,7 @@ function createThemePackElement(
   return packItem;
 }
 
-function createPackItemBase(
-  pack: CharacterPack | ThemePackMetadata,
-): HTMLElement {
+function createPackItemBase(pack: CharacterPack | ThemePack): HTMLElement {
   const packItem = document.createElement("div");
   packItem.className = "pack-item";
   packItem.dataset.packName = pack.meta.name;

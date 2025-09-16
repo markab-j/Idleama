@@ -1,6 +1,7 @@
 import type { Event } from "@tauri-apps/api/event";
+import type { ReadonlyDeep } from "type-fest";
 import type { CharacterPack } from "@/feature/character-pack/schema/character-pack.schema";
-import type { ThemePack } from "@/feature/theme-pack/types/theme-pack.type";
+import type { ThemePack } from "@/feature/theme-pack/schema/theme-pack.schema";
 
 export const PackManagementEvent = {
   READY: "pack-management:ready",
@@ -12,8 +13,8 @@ export const PackManagementEvent = {
 export type PackManagementInitPayload = {
   packs: CharacterPack[];
   enablePackNames: string[];
-  themePacks: ReadonlyArray<Readonly<ThemePack>>;
-  currentThemePack: Readonly<ThemePack>;
+  themePacks: ReadonlyDeep<ThemePack[]>;
+  currentThemePack: ReadonlyDeep<ThemePack>;
 };
 
 export type PackManagementInitEvent = Event<PackManagementInitPayload>;

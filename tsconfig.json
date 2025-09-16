@@ -21,7 +21,9 @@
 
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@core/*": ["src/core/*"],
+      "@feature/*": ["src/feature/*"]
     },
     "types": ["node"]
   },

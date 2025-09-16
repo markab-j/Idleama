@@ -6,10 +6,14 @@ import { CharacterSpriteAtlasDataProvider } from "./feature/character-pack/chara
 import { FileSystemCharacterPackLoader } from "./feature/character-pack/fs-character-pack.loader";
 import { FileSystemCharacterPackConfigStore } from "./feature/character-pack/fs-character-pack-config.store";
 import { GameManager } from "./feature/game/game.manager";
-import { FileSystemThemeLoader } from "./feature/theme-pack/fs-theme.loader";
+import { PackManagementEventListener } from "./feature/pack-managment/pack-management-event.listener";
+import { ThemeManager } from "./feature/theme/theme.manager";
+import { FileSystemThemePackLoader } from "./feature/theme-pack/fs-theme-pack.loader";
 import { FileSystemThemePackConfigStore } from "./feature/theme-pack/fs-theme-pack-config.store";
-import { ThemePackManager } from "./feature/theme-pack/theme.manager";
 import { ThemeRenderer } from "./feature/theme-pack/theme.renderer";
+import { ThemePackManager } from "./feature/theme-pack/theme-pack.manager";
+import { ThemePackAssetRegistrar } from "./feature/theme-pack/theme-pack-asset.registrar";
+import { ThemePackEventListener } from "./feature/theme-pack/theme-pack-event.listener";
 import { ThemePackPathProvider } from "./feature/theme-pack/theme-pack-path.provider";
 import { CharacterManager } from "./game/manager/character-manager";
 import { MainUIFactory } from "./ui/main/ui.factory";
@@ -50,19 +54,28 @@ async function main() {
   );
   await characterPackManager.init();
 
-  // Data Load
-  const themeLoader = new FileSystemThemeLoader(k);
+  // Init Theme
+  const themeRenderer = new ThemeRenderer(k);
+  const themeManager = new ThemeManager(themeRenderer);
+
+  // Init Theme Pack
+  const themePackEventListener = new ThemePackEventListener(themeManager);
+  const themePackLoader = new FileSystemThemePackLoader(themePackPathProvider);
+  const themePackAssetRegisterar = new ThemePackAssetRegistrar(k);
   const themePackConfigStore = new FileSystemThemePackConfigStore();
   await themePackConfigStore.load();
 
   const themePackManager = new ThemePackManager(
-    themeLoader,
+    themePackLoader,
+    themePackAssetRegisterar,
     themePackConfigStore,
-    new ThemeRenderer(k),
-    themePackPathProvider,
   );
+
+  themePackEventListener.init();
   await themePackManager.init();
 
+  const packManagementEventListener = new PackManagementEventListener();
+  packManagementEventListener.init();
   const windowManager = new WindowManager(
     characterPackManager,
     themePackManager,

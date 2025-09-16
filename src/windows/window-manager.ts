@@ -1,4 +1,4 @@
-import { emitTo, listen, once } from "@tauri-apps/api/event";
+import { emitTo, once } from "@tauri-apps/api/event";
 import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
 import {
   currentMonitor,
@@ -8,14 +8,11 @@ import {
 import { moveWindow, Position } from "@tauri-apps/plugin-positioner";
 import { createLogger } from "@/core/utils/logger";
 import type { CharacterPackManager } from "@/feature/character-pack/character-pack.manager";
-import type { ThemePackManager } from "@/feature/theme-pack/theme.manager";
-import { EventManager } from "@/game/manager/event-manager";
+import type { ThemePackManager } from "@/feature/theme-pack/theme-pack.manager";
 import { WindowLabel } from "./constants";
 import {
-  type CharacterPackEnableEvent,
   PackManagementEvent,
   type PackManagementInitPayload,
-  type ThemePackChangeEvent,
 } from "./pack-management/event";
 import type { AppWindowContext } from "./types";
 
@@ -121,24 +118,6 @@ export class WindowManager {
         `send data to ${WindowLabel.packManagement} Pack : `,
         packs.length,
       );
-    });
-
-    listen(
-      PackManagementEvent.CHARACTER_PACK_ENABLE_CHANGE,
-      (e: CharacterPackEnableEvent) => {
-        EventManager.emit(
-          PackManagementEvent.CHARACTER_PACK_ENABLE_CHANGE,
-          e.payload,
-        );
-      },
-    );
-
-    listen(PackManagementEvent.THEME_PACK_CHANGE, (e: ThemePackChangeEvent) => {
-      EventManager.emit(PackManagementEvent.THEME_PACK_CHANGE, e.payload);
-    });
-
-    packManagementWindow.listen("tauri://error", (e) => {
-      WindowManager.logger.error("창 생성 실패:", e);
     });
   }
 }

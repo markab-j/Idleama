@@ -1,13 +1,13 @@
 import z from "zod";
+import { BaseAssetSchema } from "@/shared/schema/base-asset.schema";
 
-export const BackgroundSpriteDataSchema = z
-  .object({
-    width: z.number(),
-    height: z.number(),
-  })
-  .default({
-    width: 16,
-    height: 16,
-  });
+export const BackgroundAssetSchema = BaseAssetSchema.extend({
+  tile: z.object({
+    width: z.number().positive(),
+    height: z.number().positive(),
+  }),
+  columns: z.number().positive(),
+  rows: z.number().positive(),
+});
 
-export type BackgroundSpriteData = z.infer<typeof BackgroundSpriteDataSchema>;
+export type BackgroundAsset = z.infer<typeof BackgroundAssetSchema>;

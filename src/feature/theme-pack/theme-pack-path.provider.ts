@@ -1,6 +1,7 @@
 import { documentDir, join, resourceDir } from "@tauri-apps/api/path";
+import type { PathProvider } from "@/shared/interfaces/path-provider.interface";
 
-export class ThemePackPathProvider {
+export class ThemePackPathProvider implements PathProvider {
   async getDefaultPath() {
     const resourcePath = await resourceDir();
     const defaultThemePath = await join(resourcePath, "assets/themepacks");
