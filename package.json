@@ -8,6 +8,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
+    "type-check": "tsc --noEmit",
     "lint": "biome lint --fix && biome check --fix",
     "tauri:build:win": "bun tauri build --runner cargo-xwin --target x86_64-pc-windows-msvc"
   },
