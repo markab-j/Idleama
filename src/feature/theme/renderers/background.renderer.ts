@@ -1,33 +1,33 @@
+import type { BackgroundAsset } from "@feature/theme-pack/schema/background-sprite-data.schema";
+import { toBackgroundSpriteKey } from "@feature/theme-pack/utils";
 import type { GameObj, KAPLAYCtx, LevelComp } from "kaplay";
-import type { ThemePack } from "./schema/theme-pack.schema";
-import { toBackgroundSpriteKey } from "./utils";
 
-export class ThemeRenderer {
-  private readonly cache: Map<string, GameObj<LevelComp>>;
-  private currentBackground: GameObj<LevelComp> | null;
+export class BackgroundRenderer {
+    private readonly cache: Map<string, GameObj<LevelComp>>;
+    private currentBackground: GameObj<LevelComp> | null;
 
-  constructor(private readonly k: KAPLAYCtx) {
-    this.cache = new Map();
-    this.currentBackground = null;
-  }
+    constructor(private readonly k: KAPLAYCtx) {
+        this.cache = new Map();
+        this.currentBackground = null;
+    }
 
-  render(pack: ThemePack): void {
+    render(packName: string, backgroundAsset: BackgroundAsset): void {
     if (this.currentBackground) {
       this.currentBackground.hidden = true;
     }
 
-    const cachedBackground = this.cache.get(pack.meta.name);
+    const cachedBackground = this.cache.get(packName);
 
     if (cachedBackground) {
       cachedBackground.hidden = false;
       this.currentBackground = cachedBackground;
     } else {
-      const key = toBackgroundSpriteKey(pack.meta.name);
+      const key = toBackgroundSpriteKey(packName);
       const newBackground = this.k.addLevel(
         this.generateMap(this.k, this.k.width(), this.k.height()),
         {
-          tileWidth: pack.assets.background.tile.width,
-          tileHeight: pack.assets.background.tile.height,
+          tileWidth: backgroundAsset.tile.width,
+          tileHeight: backgroundAsset.tile.height,
           tiles: {
             "1": () => [this.k.sprite(key, { frame: 56 })],
             "2": () => [this.k.sprite(key, { frame: 57 })],
@@ -42,14 +42,9 @@ export class ThemeRenderer {
         },
       );
 
-      this.cache.set(pack.meta.name, newBackground);
+      this.cache.set(packName, newBackground);
       this.currentBackground = newBackground;
     }
-
-    document.documentElement.style.setProperty(
-      "--top-border-sprite",
-      `url(${pack.assets.border.src})`,
-    );
   }
 
   private generateMap(

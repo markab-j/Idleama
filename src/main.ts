@@ -12,7 +12,7 @@ import { PackManagementEventListener } from "./feature/pack-managment/pack-manag
 import { ThemeManager } from "./feature/theme/theme.manager";
 import { FileSystemThemePackLoader } from "./feature/theme-pack/fs-theme-pack.loader";
 import { FileSystemThemePackConfigStore } from "./feature/theme-pack/fs-theme-pack-config.store";
-import { ThemeRenderer } from "./feature/theme-pack/theme.renderer";
+import { ThemeRenderer } from "./feature/theme/renderers/theme.renderer";
 import { ThemePackManager } from "./feature/theme-pack/theme-pack.manager";
 import { ThemePackAssetRegistrar } from "./feature/theme-pack/theme-pack-asset.registrar";
 import { ThemePackEventListener } from "./feature/theme-pack/theme-pack-event.listener";
@@ -21,6 +21,8 @@ import { CharacterFactory } from "./game/character/character.factory";
 import { MainUIFactory } from "./ui/main/ui.factory";
 import { MainUIManager } from "./ui/main/ui.manager";
 import { WindowManager } from "./windows/window-manager";
+import { BackgroundRenderer } from "./feature/theme/renderers/background.renderer";
+import { BorderRenderer } from "./feature/theme/renderers/border.renderer";
 
 async function main() {
   // Init Window
@@ -51,21 +53,22 @@ async function main() {
   const characterManager = new CharacterManager(characterGameObjectManager);
 
   // Init CharacterPack
+  const characterSpriteAtlasDataProvider = new CharacterSpriteAtlasDataProvider();
+  const characterPackLoader = new FileSystemCharacterPackLoader(k, characterSpriteAtlasDataProvider);
   const characterPackConfigStore = new FileSystemCharacterPackConfigStore();
   await characterPackConfigStore.load();
 
   const characterPackManager = new CharacterPackManager(
-    new FileSystemCharacterPackLoader(
-      k,
-      new CharacterSpriteAtlasDataProvider(),
-    ),
+    characterPackLoader,
     characterPackConfigStore,
     characterPackPathProvider,
   );
   await characterPackManager.init();
 
   // Init Theme
-  const themeRenderer = new ThemeRenderer(k);
+  const backgroundRenderer = new BackgroundRenderer(k);
+  const borderRenderer = new BorderRenderer();
+  const themeRenderer = new ThemeRenderer(backgroundRenderer, borderRenderer);
   const themeManager = new ThemeManager(themeRenderer);
 
   // Init Theme Pack
