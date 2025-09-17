@@ -1,6 +1,7 @@
 import { CharacterPackManager } from "@/feature/character-pack/character-pack.manager";
+import { MainUIFactory } from "./app/ui.factory";
+import { MainUIManager } from "./app/ui.manager";
 import { PathService } from "./core/service/path.service";
-import { createLogger } from "./core/utils/logger";
 import { CharacterFactory } from "./feature/character/character.factory";
 import { CharacterGameObjectManager } from "./feature/character/character-gameobject.manager";
 import { CharacterManager } from "./feature/character/character-manager";
@@ -21,9 +22,8 @@ import { ThemePackManager } from "./feature/theme-pack/theme-pack.manager";
 import { ThemePackAssetRegistrar } from "./feature/theme-pack/theme-pack-asset.registrar";
 import { ThemePackEventListener } from "./feature/theme-pack/theme-pack-event.listener";
 import { ThemePackPathProvider } from "./feature/theme-pack/theme-pack-path.provider";
-import { MainUIFactory } from "./ui/main/ui.factory";
-import { MainUIManager } from "./ui/main/ui.manager";
-import { WindowManager } from "./windows/window-manager";
+import { WindowManager } from "./feature/window/window-manager";
+import { createLogger } from "./shared/utils/logger";
 
 async function main() {
   // Init Window

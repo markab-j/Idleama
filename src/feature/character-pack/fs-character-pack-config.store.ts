@@ -5,8 +5,8 @@ import {
   writeTextFile,
 } from "@tauri-apps/plugin-fs";
 import z from "zod";
-import { toJson } from "@/core/utils/json";
-import { createLogger } from "@/core/utils/logger";
+import { toJson } from "@/shared/utils/json";
+import { createLogger } from "@/shared/utils/logger";
 import type { CharacterPackConfigStore } from "./interfaces/chracter-pack-config-store.interface";
 import {
   type CharacterPackConfig,

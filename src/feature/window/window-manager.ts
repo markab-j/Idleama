@@ -1,4 +1,3 @@
-import { createLogger } from "@core/utils/logger";
 import type { CharacterPackManager } from "@feature/character-pack/character-pack.manager";
 import type { ThemePackManager } from "@feature/theme-pack/theme-pack.manager";
 import { emitTo, once } from "@tauri-apps/api/event";
@@ -13,6 +12,7 @@ import {
   PackManagementEvent,
   type PackManagementWindowDomLoadedContext,
 } from "@/feature/pack-managment/events";
+import { createLogger } from "@/shared/utils/logger";
 import { WindowLabel } from "./constants";
 import type { AppWindowContext } from "./types";
 

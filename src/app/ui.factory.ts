@@ -1,7 +1,7 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { resolveResource } from "@tauri-apps/api/path";
 import { exit } from "@tauri-apps/plugin-process";
-import type { WindowManager } from "@/windows/window-manager";
+import type { WindowManager } from "@/feature/window/window-manager";
 
 export class MainUIFactory {
   constructor(private readonly windowManager: WindowManager) {}

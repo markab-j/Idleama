@@ -16,7 +16,7 @@ import {
   PackJsonNotFoundError,
   PackParseError,
 } from "@/core/error/pack.error";
-import { createLogger } from "@/core/utils/logger";
+import { createLogger } from "@/shared/utils/logger";
 import type { CharacterPackPathProvider } from "./character-pack-path.provider";
 import type { CharacterPackLoader } from "./interfaces/character-pack-loader.interface";
 import {

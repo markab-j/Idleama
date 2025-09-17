@@ -9,7 +9,7 @@ import {
 import { clone } from "es-toolkit";
 import { err, ok, type Result } from "neverthrow";
 import z from "zod";
-import { createLogger } from "@/core/utils/logger";
+import { createLogger } from "@/shared/utils/logger";
 import {
   AssetNotFoundError,
   ThemePackError,

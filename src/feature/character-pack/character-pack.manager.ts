@@ -1,5 +1,5 @@
 import { sortBy } from "es-toolkit";
-import { createLogger } from "@/core/utils/logger";
+import { createLogger } from "@/shared/utils/logger";
 import type { CharacterPackAssetRegistrar } from "./character-pack-asset.registrar";
 import type { CharacterPackLoader } from "./interfaces/character-pack-loader.interface";
 import type { CharacterPackConfigStore } from "./interfaces/chracter-pack-config-store.interface";

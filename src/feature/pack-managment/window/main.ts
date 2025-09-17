@@ -2,7 +2,7 @@ import { emitTo, once } from "@tauri-apps/api/event";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import type { CharacterPack } from "@/feature/character-pack/schema/character-pack.schema";
 import type { ThemePack } from "@/feature/theme-pack/schema/theme-pack.schema";
-import { WindowLabel } from "@/windows/constants";
+import { WindowLabel } from "@/feature/window/constants";
 import {
   PackManagementEvent,
   type PackManagementWindowDomLoadedEvent,
