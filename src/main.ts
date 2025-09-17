@@ -1,6 +1,8 @@
 import { CharacterPackManager } from "@/feature/character-pack/character-pack.manager";
 import { PathService } from "./core/service/path.service";
 import { createLogger } from "./core/utils/logger";
+import { CharacterGameObjectManager } from "./feature/character/character-gameobject.manager";
+import { CharacterManager } from "./feature/character/character-manager";
 import { CharacterPackPathProvider } from "./feature/character-pack/character-pack-path.provider";
 import { CharacterSpriteAtlasDataProvider } from "./feature/character-pack/character-sprite-atlas-data.provider";
 import { FileSystemCharacterPackLoader } from "./feature/character-pack/fs-character-pack.loader";
@@ -15,7 +17,7 @@ import { ThemePackManager } from "./feature/theme-pack/theme-pack.manager";
 import { ThemePackAssetRegistrar } from "./feature/theme-pack/theme-pack-asset.registrar";
 import { ThemePackEventListener } from "./feature/theme-pack/theme-pack-event.listener";
 import { ThemePackPathProvider } from "./feature/theme-pack/theme-pack-path.provider";
-import { CharacterManager } from "./game/manager/character-manager";
+import { CharacterFactory } from "./game/character/character.factory";
 import { MainUIFactory } from "./ui/main/ui.factory";
 import { MainUIManager } from "./ui/main/ui.manager";
 import { WindowManager } from "./windows/window-manager";
@@ -41,6 +43,14 @@ async function main() {
 
   const k = gameManager.getGameCtx();
 
+  // Init Character
+  const characterFactory = new CharacterFactory(k);
+  const characterGameObjectManager = new CharacterGameObjectManager(
+    characterFactory,
+  );
+  const characterManager = new CharacterManager(characterGameObjectManager);
+
+  // Init CharacterPack
   const characterPackConfigStore = new FileSystemCharacterPackConfigStore();
   await characterPackConfigStore.load();
 
@@ -74,8 +84,12 @@ async function main() {
   themePackEventListener.init();
   await themePackManager.init();
 
-  const packManagementEventListener = new PackManagementEventListener();
+  const packManagementEventListener = new PackManagementEventListener(
+    characterPackManager,
+    characterManager,
+  );
   packManagementEventListener.init();
+
   const windowManager = new WindowManager(
     characterPackManager,
     themePackManager,
@@ -86,8 +100,8 @@ async function main() {
   await mainUIManager.initTitleBar();
 
   // Main
-  const characterManager = new CharacterManager(k, characterPackManager);
-  characterManager.createEnabledCharacters();
+
+  characterManager.initializeCharacters(characterPackManager.getEnablePacks());
 }
 
 const mainLogger = createLogger("Main");

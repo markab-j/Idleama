@@ -1,17 +1,21 @@
 import type { Initializable } from "@core/interfaces/initializable.interface";
+import type { CharacterPackManager } from "@feature/character-pack/character-pack.manager";
+import { ThemePackEvent, ThemePackEventBus } from "@feature/theme-pack/events";
 import { listen, type UnlistenFn } from "@tauri-apps/api/event";
-import { EventManager } from "@/game/manager/event-manager";
+import type { CharacterManager } from "../character/character-manager";
 import {
-  type CharacterPackEnableEvent,
+  type CharacterPackChangeEvent,
   PackManagementEvent,
   type ThemePackChangeEvent,
-} from "@/windows/pack-management/event";
-import { ThemePackEvent, ThemePackEventBus } from "../theme-pack/events";
+} from "./events";
 
 export class PackManagementEventListener implements Initializable {
   private unListenFns: UnlistenFn[];
 
-  constructor() {
+  constructor(
+    private readonly characterPackManager: CharacterPackManager,
+    private readonly characterManager: CharacterManager,
+  ) {
     this.unListenFns = [];
   }
 
@@ -19,7 +23,7 @@ export class PackManagementEventListener implements Initializable {
     const unlistenFns = await Promise.all([
       listen(
         PackManagementEvent.CHARACTER_PACK_ENABLE_CHANGE,
-        this.onCharacterPackEnableChange,
+        this.onCharacterPackChange,
       ),
       listen(PackManagementEvent.THEME_PACK_CHANGE, this.onThemePackChange),
     ]);
@@ -33,11 +37,10 @@ export class PackManagementEventListener implements Initializable {
     }
   }
 
-  private onCharacterPackEnableChange = (e: CharacterPackEnableEvent) => {
-    EventManager.emit(
-      PackManagementEvent.CHARACTER_PACK_ENABLE_CHANGE,
-      e.payload,
-    );
+  private onCharacterPackChange = (e: CharacterPackChangeEvent) => {
+    const { payload } = e;
+    this.characterPackManager.updatePack(payload.packName, payload.enabled);
+    this.characterManager.updateCharacter(payload.packName, payload.enabled);
   };
 
   private onThemePackChange = (e: ThemePackChangeEvent) => {

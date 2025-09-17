@@ -8,7 +8,7 @@ export class CharacterFactory {
 
   constructor(private readonly k: KAPLAYCtx) {}
 
-  create(packName: string, pos: Vec2) {
+  create(packName: string, pos: Vec2 = this.k.center().toFixed(0)) {
     this.logger.log("new CharacterObj: ", packName);
     const spriteKey = toCharacterSpriteKey(packName);
     return new Character(this.k, spriteKey, pos);

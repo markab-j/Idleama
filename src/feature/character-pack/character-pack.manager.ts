@@ -1,10 +1,5 @@
 import { sortBy } from "es-toolkit";
 import { createLogger } from "@/core/utils/logger";
-import { EventManager } from "@/game/manager/event-manager";
-import {
-  type CharacterPackEnablePayload,
-  PackManagementEvent,
-} from "@/windows/pack-management/event";
 import type { CharacterPackPathProvider } from "./character-pack-path.provider";
 import type { CharacterPackLoader } from "./interfaces/character-pack-loader.interface";
 import type { CharacterPackConfigStore } from "./interfaces/chracter-pack-config-store.interface";
@@ -20,29 +15,30 @@ export class CharacterPackManager {
     private readonly pathProvider: CharacterPackPathProvider,
   ) {
     this.characterPacks = [];
-    EventManager.on(
-      PackManagementEvent.CHARACTER_PACK_ENABLE_CHANGE,
-      async (e) => await this.changePackEnable(e),
-    );
   }
 
   async init() {
     await this.reload();
   }
 
-  public getEnablePackNames(): string[] {
-    this.logger.log("getEnablePacks...");
+  public getEnablePacks(): CharacterPack[] {
     const { enabled_packs } = this.config.get();
-
-    this.logger.log("enabledPacks", enabled_packs);
-    return this.characterPacks
-      .map((pack) => pack.meta.name)
-      .filter((name) => enabled_packs.includes(name));
+    return this.characterPacks.filter((pack) =>
+      enabled_packs.includes(pack.meta.name),
+    );
   }
 
-  async changePackEnable(event: CharacterPackEnablePayload) {
-    if (event.enabled) await this.config.enablePack(event.packName);
-    else await this.config.disablePack(event.packName);
+  async updatePack(packName: string, enabled: boolean) {
+    if (enabled) this.enablePack(packName);
+    else this.disablePack(packName);
+  }
+
+  async enablePack(packName: string) {
+    await this.config.enablePack(packName);
+  }
+
+  async disablePack(packName: string) {
+    await this.config.disablePack(packName);
   }
 
   async reload(): Promise<void> {

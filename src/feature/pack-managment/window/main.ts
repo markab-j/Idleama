@@ -2,8 +2,11 @@ import { emitTo, once } from "@tauri-apps/api/event";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import type { CharacterPack } from "@/feature/character-pack/schema/character-pack.schema";
 import type { ThemePack } from "@/feature/theme-pack/schema/theme-pack.schema";
-import { WindowLabel } from "../constants";
-import { PackManagementEvent, type PackManagementInitEvent } from "./event";
+import { WindowLabel } from "@/windows/constants";
+import {
+  PackManagementEvent,
+  type PackManagementWindowDomLoadedEvent,
+} from "../events";
 
 type PackTab = "character" | "theme";
 
@@ -32,17 +35,20 @@ document.addEventListener("DOMContentLoaded", () => {
   characterTab.addEventListener("click", () => switchTab("character"));
   themeTab.addEventListener("click", () => switchTab("theme"));
 
-  once(PackManagementEvent.INIT_WINDOW, (event: PackManagementInitEvent) => {
-    const { packs, enablePackNames, themePacks, currentThemePack } =
-      event.payload;
+  once(
+    PackManagementEvent.WINDOW_DOM_LOADED,
+    (event: PackManagementWindowDomLoadedEvent) => {
+      const { packs, enablePackNames, themePacks, currentThemePack } =
+        event.payload;
 
-    allCharacterPacks = packs;
-    enabledCharacterPackNames = new Set(enablePackNames);
-    allThemePacks = themePacks;
-    currentThemeName = currentThemePack.meta.name;
+      allCharacterPacks = packs;
+      enabledCharacterPackNames = new Set(enablePackNames);
+      allThemePacks = themePacks;
+      currentThemeName = currentThemePack.meta.name;
 
-    renderContent();
-  });
+      renderContent();
+    },
+  );
 
   emitTo(WindowLabel.main, PackManagementEvent.READY);
 });

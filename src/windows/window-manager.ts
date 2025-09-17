@@ -1,3 +1,6 @@
+import { createLogger } from "@core/utils/logger";
+import type { CharacterPackManager } from "@feature/character-pack/character-pack.manager";
+import type { ThemePackManager } from "@feature/theme-pack/theme-pack.manager";
 import { emitTo, once } from "@tauri-apps/api/event";
 import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
 import {
@@ -6,14 +9,11 @@ import {
   PhysicalSize,
 } from "@tauri-apps/api/window";
 import { moveWindow, Position } from "@tauri-apps/plugin-positioner";
-import { createLogger } from "@/core/utils/logger";
-import type { CharacterPackManager } from "@/feature/character-pack/character-pack.manager";
-import type { ThemePackManager } from "@/feature/theme-pack/theme-pack.manager";
-import { WindowLabel } from "./constants";
 import {
   PackManagementEvent,
-  type PackManagementInitPayload,
-} from "./pack-management/event";
+  type PackManagementWindowDomLoadedContext,
+} from "@/feature/pack-managment/events";
+import { WindowLabel } from "./constants";
 import type { AppWindowContext } from "./types";
 
 export class WindowManager {
@@ -99,14 +99,16 @@ export class WindowManager {
     once(PackManagementEvent.READY, async () => {
       WindowManager.logger.log(`${WindowLabel.packManagement} is Ready.`);
       const packs = this.characterPackManager.getAll();
-      const enablePackNames = this.characterPackManager.getEnablePackNames();
+      const enablePackNames = this.characterPackManager
+        .getEnablePacks()
+        .map((pack) => pack.meta.name);
 
       const themePacks = this.themePackManager.getAll();
       const currentThemePack = this.themePackManager.getCurrentPack();
 
-      await emitTo<PackManagementInitPayload>(
+      await emitTo<PackManagementWindowDomLoadedContext>(
         WindowLabel.packManagement,
-        PackManagementEvent.INIT_WINDOW,
+        PackManagementEvent.WINDOW_DOM_LOADED,
         {
           packs,
           enablePackNames,
