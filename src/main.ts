@@ -1,28 +1,29 @@
 import { CharacterPackManager } from "@/feature/character-pack/character-pack.manager";
 import { PathService } from "./core/service/path.service";
 import { createLogger } from "./core/utils/logger";
+import { CharacterFactory } from "./feature/character/character.factory";
 import { CharacterGameObjectManager } from "./feature/character/character-gameobject.manager";
 import { CharacterManager } from "./feature/character/character-manager";
+import { CharacterPackAssetRegistrar } from "./feature/character-pack/character-pack-asset.registrar";
 import { CharacterPackPathProvider } from "./feature/character-pack/character-pack-path.provider";
-import { CharacterSpriteAtlasDataProvider } from "./feature/character-pack/character-sprite-atlas-data.provider";
+import { CharacterSpriteAssetParser } from "./feature/character-pack/character-sprite-atlas-data.provider";
 import { FileSystemCharacterPackLoader } from "./feature/character-pack/fs-character-pack.loader";
 import { FileSystemCharacterPackConfigStore } from "./feature/character-pack/fs-character-pack-config.store";
 import { GameManager } from "./feature/game/game.manager";
 import { PackManagementEventListener } from "./feature/pack-managment/pack-management-event.listener";
+import { BackgroundRenderer } from "./feature/theme/renderers/background.renderer";
+import { BorderRenderer } from "./feature/theme/renderers/border.renderer";
+import { ThemeRenderer } from "./feature/theme/renderers/theme.renderer";
 import { ThemeManager } from "./feature/theme/theme.manager";
 import { FileSystemThemePackLoader } from "./feature/theme-pack/fs-theme-pack.loader";
 import { FileSystemThemePackConfigStore } from "./feature/theme-pack/fs-theme-pack-config.store";
-import { ThemeRenderer } from "./feature/theme/renderers/theme.renderer";
 import { ThemePackManager } from "./feature/theme-pack/theme-pack.manager";
 import { ThemePackAssetRegistrar } from "./feature/theme-pack/theme-pack-asset.registrar";
 import { ThemePackEventListener } from "./feature/theme-pack/theme-pack-event.listener";
 import { ThemePackPathProvider } from "./feature/theme-pack/theme-pack-path.provider";
-import { CharacterFactory } from "./game/character/character.factory";
 import { MainUIFactory } from "./ui/main/ui.factory";
 import { MainUIManager } from "./ui/main/ui.manager";
 import { WindowManager } from "./windows/window-manager";
-import { BackgroundRenderer } from "./feature/theme/renderers/background.renderer";
-import { BorderRenderer } from "./feature/theme/renderers/border.renderer";
 
 async function main() {
   // Init Window
@@ -53,15 +54,21 @@ async function main() {
   const characterManager = new CharacterManager(characterGameObjectManager);
 
   // Init CharacterPack
-  const characterSpriteAtlasDataProvider = new CharacterSpriteAtlasDataProvider();
-  const characterPackLoader = new FileSystemCharacterPackLoader(k, characterSpriteAtlasDataProvider);
+  const characterSpriteAtlasDataProvider = new CharacterSpriteAssetParser();
+  const characterPackLoader = new FileSystemCharacterPackLoader(
+    characterPackPathProvider,
+  );
+  const characterPackAssetRegistrar = new CharacterPackAssetRegistrar(
+    k,
+    characterSpriteAtlasDataProvider,
+  );
   const characterPackConfigStore = new FileSystemCharacterPackConfigStore();
   await characterPackConfigStore.load();
 
   const characterPackManager = new CharacterPackManager(
     characterPackLoader,
+    characterPackAssetRegistrar,
     characterPackConfigStore,
-    characterPackPathProvider,
   );
   await characterPackManager.init();
 

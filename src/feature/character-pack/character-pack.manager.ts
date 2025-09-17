@@ -1,6 +1,6 @@
 import { sortBy } from "es-toolkit";
 import { createLogger } from "@/core/utils/logger";
-import type { CharacterPackPathProvider } from "./character-pack-path.provider";
+import type { CharacterPackAssetRegistrar } from "./character-pack-asset.registrar";
 import type { CharacterPackLoader } from "./interfaces/character-pack-loader.interface";
 import type { CharacterPackConfigStore } from "./interfaces/chracter-pack-config-store.interface";
 import type { CharacterPack } from "./schema/character-pack.schema";
@@ -11,14 +11,18 @@ export class CharacterPackManager {
 
   constructor(
     private readonly loader: CharacterPackLoader,
+    private readonly assetRegistrar: CharacterPackAssetRegistrar,
     private readonly config: CharacterPackConfigStore,
-    private readonly pathProvider: CharacterPackPathProvider,
   ) {
     this.characterPacks = [];
   }
 
   async init() {
     await this.reload();
+  }
+
+  public getAll(): CharacterPack[] {
+    return [...this.characterPacks];
   }
 
   public getEnablePacks(): CharacterPack[] {
@@ -44,14 +48,9 @@ export class CharacterPackManager {
   async reload(): Promise<void> {
     this.logger.log("reload start...");
 
-    const [defaultPackPath, externalPackPath] = await Promise.all([
-      this.pathProvider.getDefaultPath(),
-      this.pathProvider.getUserPath(),
-    ]);
-
     const [defaultPacks, externalPacks] = await Promise.all([
-      this.loader.load(defaultPackPath),
-      this.loader.load(externalPackPath),
+      this.loader.loadDefaultPack(),
+      this.loader.loadExternalPack(),
     ]);
 
     this.characterPacks = this.characterPacks.concat(
@@ -60,10 +59,7 @@ export class CharacterPackManager {
     );
 
     sortBy(this.characterPacks, [(pack) => pack.meta.name]);
-    this.logger.log("load success. count:", this.characterPacks.length);
-  }
 
-  getAll(): CharacterPack[] {
-    return [...this.characterPacks];
+    this.assetRegistrar.load(this.characterPacks);
   }
 }

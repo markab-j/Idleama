@@ -8,17 +8,14 @@ import type {
   TweenController,
   Vec2,
 } from "kaplay";
-import { CharacterAnim } from "@/game/character/enums/anim.enum.ts";
-import {
-  allStates,
-  CharacterState,
-} from "@/game/character/enums/state.enum.ts";
+import { getIdleAnimKey, getWalkAnimKey } from "@/game/utils/anim";
+import { getDirection, isRight } from "@/game/utils/direction";
 import { clampPosToScreen } from "@/game/utils/world.ts";
-import { getIdleAnimKey, getWalkAnimKey } from "../utils/anim";
-import { getDirection, isRight } from "../utils/direction";
+import { CharacterAnim } from "./enums/anim.enum";
 import type { DirectionType } from "./enums/direction.enum";
+import { allStates, CharacterState } from "./enums/state.enum";
 
-export class Character {
+export class CharacterGameObj {
   private readonly SPEED = 10;
   private readonly MOVE_RADIUS = 150;
   tween?: TweenController;

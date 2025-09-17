@@ -1,10 +1,23 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { join } from "@tauri-apps/api/path";
-import { exists, readDir, readTextFile } from "@tauri-apps/plugin-fs";
-import type { KAPLAYCtx } from "kaplay";
+import {
+  type DirEntry,
+  exists,
+  readDir,
+  readTextFile,
+} from "@tauri-apps/plugin-fs";
+import { clone } from "es-toolkit";
+import { err, ok, type Result } from "neverthrow";
 import z from "zod";
+import { PackType } from "@/core/enum/pack.enum";
+import {
+  PackAssetNotFoundError,
+  PackError,
+  PackJsonNotFoundError,
+  PackParseError,
+} from "@/core/error/pack.error";
 import { createLogger } from "@/core/utils/logger";
-import type { CharacterSpriteAtlasDataProvider } from "./character-sprite-atlas-data.provider";
+import type { CharacterPackPathProvider } from "./character-pack-path.provider";
 import type { CharacterPackLoader } from "./interfaces/character-pack-loader.interface";
 import {
   type CharacterPack,
@@ -14,48 +27,107 @@ import {
 export class FileSystemCharacterPackLoader implements CharacterPackLoader {
   private readonly logger = createLogger(FileSystemCharacterPackLoader.name);
 
-  constructor(
-    private readonly k: KAPLAYCtx,
-    private readonly spriteAtlasDataProvider: CharacterSpriteAtlasDataProvider,
-  ) {}
+  constructor(private readonly pathProvider: CharacterPackPathProvider) {}
 
-  async load(packPath: string): Promise<CharacterPack[]> {
-    this.logger.log("load start");
+  async loadDefaultPack(): Promise<CharacterPack[]> {
+    this.logger.log("Load Default Character Packs...");
+    const basePath = await this.pathProvider.getDefaultPath();
+    return this.load(basePath);
+  }
 
-    const packFolders = await readDir(packPath);
+  async loadExternalPack(): Promise<CharacterPack[]> {
+    this.logger.log("Load External Character Packs...");
+    const basePath = await this.pathProvider.getDefaultPath();
+    return this.load(basePath);
+  }
+
+  async load(basePackPath: string): Promise<CharacterPack[]> {
+    const packFolders = await readDir(basePackPath);
+
+    const loadResults = await Promise.all(
+      packFolders.map((folder) => this.loadPack(basePackPath, folder)),
+    );
 
     const loadedPacks: CharacterPack[] = [];
 
-    for (const folder of packFolders) {
-      if (!folder.isDirectory || folder.name.startsWith(".")) continue;
-
-      const packJsonPath = await join(packPath, folder.name, "pack.json");
-      const spritePath = await join(packPath, folder.name, "sprite.png");
-
-      const packJsonExists = await exists(packJsonPath);
-      const spriteExists = await exists(spritePath);
-
-      if (packJsonExists && spriteExists) {
-        const jsonContent = await readTextFile(packJsonPath);
-        const result = CharacterPackSchema.safeParse(jsonContent);
-
-        if (!result.success) {
-          this.logger.warn(z.prettifyError(result.error));
-          continue;
+    for (const result of loadResults) {
+      if (result.isOk()) {
+        loadedPacks.push(result.value);
+      } else if (result.error) {
+        if (result.error instanceof PackParseError) {
+          this.logger.warn(
+            result.error.message,
+            z.prettifyError(result.error.zodError),
+          );
+        } else {
+          this.logger.warn(result.error.message);
         }
-
-        const characterPack = result.data;
-
-        loadedPacks.push(characterPack);
-
-        this.k.loadSpriteAtlas(
-          convertFileSrc(spritePath),
-          this.spriteAtlasDataProvider.get8AxisAtlasData(characterPack),
-        );
       }
     }
 
-    this.logger.log("load success. count: ", loadedPacks.length);
+    this.logger.log(
+      `Load complete. Success: ${loadedPacks.length}, Failed: ${loadResults.length - loadedPacks.length}`,
+    );
     return loadedPacks;
+  }
+
+  private async loadPack(
+    basePath: string,
+    folder: DirEntry,
+  ): Promise<Result<CharacterPack, PackError | null>> {
+    if (!folder.isDirectory || folder.name.startsWith(".")) {
+      return err(null);
+    }
+
+    const packPath = await join(basePath, folder.name);
+
+    try {
+      const packJsonPath = await join(packPath, "pack.json");
+      if (!(await exists(packJsonPath))) {
+        return err(new PackJsonNotFoundError(PackType.CHARACTER, packPath));
+      }
+
+      const jsonContent = await readTextFile(packJsonPath);
+      const parseResult = CharacterPackSchema.safeParse(
+        JSON.parse(jsonContent),
+      );
+
+      if (!parseResult.success) {
+        return err(
+          new PackParseError(PackType.CHARACTER, packPath, parseResult.error),
+        );
+      }
+
+      return this.resolveAssetPath(parseResult.data, packPath);
+    } catch (e) {
+      return err(
+        new PackError(
+          PackType.CHARACTER,
+          e instanceof Error ? e.message : "Unknown file error",
+          packPath,
+        ),
+      );
+    }
+  }
+
+  private async resolveAssetPath(
+    characterPack: CharacterPack,
+    packPath: string,
+  ): Promise<Result<CharacterPack, PackAssetNotFoundError>> {
+    const spriteSrc = await join(packPath, characterPack.assets.sprite.src);
+    const spriteExists = await exists(spriteSrc);
+
+    const missingFiles: string[] = [];
+    if (!spriteExists) missingFiles.push(characterPack.assets.sprite.src);
+
+    if (missingFiles.length > 0)
+      return err(
+        new PackAssetNotFoundError(PackType.CHARACTER, packPath, missingFiles),
+      );
+
+    const resolvedPack = clone(characterPack);
+    resolvedPack.assets.sprite.src = convertFileSrc(spriteSrc);
+
+    return ok(resolvedPack);
   }
 }

@@ -9,7 +9,10 @@ export class ThemeRenderer {
   ) {}
 
   render(themePack: ThemePack) {
-    this.backgroundRenderer.render(themePack.meta.name, themePack.assets.background);
+    this.backgroundRenderer.render(
+      themePack.meta.name,
+      themePack.assets.background,
+    );
     this.borderRenderer.render(themePack.assets.border);
   }
 }

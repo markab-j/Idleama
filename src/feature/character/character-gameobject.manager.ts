@@ -1,8 +1,8 @@
-import type { Character } from "@/game/character/character";
-import type { CharacterFactory } from "@/game/character/character.factory";
+import type { CharacterFactory } from "./character.factory";
+import type { CharacterGameObj } from "./character.gameobject";
 
 export class CharacterGameObjectManager {
-  private readonly characterMap: Map<string, Character>;
+  private readonly characterMap: Map<string, CharacterGameObj>;
 
   constructor(private readonly factory: CharacterFactory) {
     this.characterMap = new Map();

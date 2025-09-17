@@ -1,5 +1,5 @@
 import z from "zod";
-import { BackgroundAssetSchema } from "./background-sprite-data.schema";
+import { BackgroundAssetSchema } from "./background-asset.schema";
 import { BorderAssetSchema } from "./border-asset.schema";
 
 export const ThemePackAssetSchema = z.object({

@@ -1,40 +1,37 @@
-import type { SpriteAnim, SpriteAtlasData } from "kaplay";
-import { CharacterAnim } from "@/game/character/enums/anim.enum";
-import type { CharacterPack } from "./schema/character-pack.schema";
-import { toCharacterSpriteKey } from "./utils";
+import { CharacterAnim } from "@feature/character/enums/anim.enum";
+import type { LoadSpriteOpt, SpriteAnims } from "kaplay";
+import type { CharacterAnimMap } from "./schema/character-anim-map.schema";
+import type { CharacterPackAsset } from "./schema/character-pack-asset.schema";
 
-export class CharacterSpriteAtlasDataProvider {
-  get8AxisAtlasData(pack: CharacterPack): SpriteAtlasData {
+export class CharacterSpriteAssetParser {
+  public get8Axis(characterPackAsset: CharacterPackAsset): LoadSpriteOpt {
     return {
-      [toCharacterSpriteKey(pack.meta.name)]: {
-        x: 0,
-        y: 0,
-        width: pack.sprite.width * 4,
-        height: pack.sprite.height * 10,
-        sliceX: 4,
-        sliceY: 10,
-        anims: {
-          [`${CharacterAnim.IDLE_DOWN}`]: getCharacterSpriteAnim(0),
-          [`${CharacterAnim.IDLE_DOWN_LEFT}`]: getCharacterSpriteAnim(1),
-          [`${CharacterAnim.IDLE_LEFT}`]: getCharacterSpriteAnim(2),
-          [`${CharacterAnim.IDLE_UP_LEFT}`]: getCharacterSpriteAnim(3),
-          [`${CharacterAnim.IDLE_UP}`]: getCharacterSpriteAnim(4),
-          [`${CharacterAnim.WALK_DOWN}`]: getCharacterSpriteAnim(5),
-          [`${CharacterAnim.WALK_DOWN_LEFT}`]: getCharacterSpriteAnim(6),
-          [`${CharacterAnim.WALK_LEFT}`]: getCharacterSpriteAnim(7),
-          [`${CharacterAnim.WALK_UP_LEFT}`]: getCharacterSpriteAnim(8),
-          [`${CharacterAnim.WALK_UP}`]: getCharacterSpriteAnim(9),
-        },
-      },
+      sliceX: characterPackAsset.sprite.columns,
+      sliceY: characterPackAsset.sprite.rows,
+      anims: this.parseAnim(characterPackAsset.anims),
     };
   }
-}
 
-function getCharacterSpriteAnim(index: number, speed: number = 5): SpriteAnim {
-  return {
-    from: index * 4,
-    to: index * 4 + 3,
-    loop: true,
-    speed: speed,
-  };
+  private parseAnim(
+    characterAnimMap: CharacterAnimMap,
+    speed: number = 5,
+  ): SpriteAnims {
+    const spriteAnims: SpriteAnims = {};
+    let currentFrameIndex = 0;
+    const animNames = Object.keys(CharacterAnim) as CharacterAnim[];
+
+    for (const animName of animNames) {
+      const animData = characterAnimMap[animName];
+      const frameCount = animData.frameCount;
+
+      const from = currentFrameIndex;
+      const to = currentFrameIndex + frameCount - 1;
+
+      spriteAnims[animName] = { from, to, loop: true, speed };
+
+      currentFrameIndex = to + 1;
+    }
+
+    return spriteAnims;
+  }
 }

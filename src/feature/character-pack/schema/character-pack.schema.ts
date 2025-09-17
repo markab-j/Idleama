@@ -1,15 +1,13 @@
 import z from "zod";
 import { parseToObjectIfString } from "@/core/utils/json";
 import { PackMetadataSchema } from "@/shared/schema/pack-metadata.schema";
-import { CharacterDataSchema } from "./character-data.schema";
-import { SpriteDataSchema } from "./sprite-data.schema";
+import { CharacterPackAssetSchema } from "./character-pack-asset.schema";
 
 export const CharacterPackSchema = z.preprocess(
   parseToObjectIfString,
   z.object({
     meta: PackMetadataSchema,
-    character: CharacterDataSchema,
-    sprite: SpriteDataSchema,
+    assets: CharacterPackAssetSchema,
   }),
 );
 

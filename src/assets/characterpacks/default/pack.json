@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "name": "Default",
+    "author": "Gemini",
+    "description": "Default character pack",
+    "version": "1.0.0"
+  },
+  "assets": {
+    "character": {
+      "name": "Default Character"
+    },
+    "sprite": {
+      "src": "",
+      "columns": 4,
+      "rows": 10
+    },
+    "anims": {
+      "IDLE_UP": { "frameCount": 1 },
+      "IDLE_DOWN": { "frameCount": 1 },
+      "IDLE_LEFT": { "frameCount": 1 },
+      "IDLE_UP_LEFT": { "frameCount": 1 },
+      "IDLE_DOWN_LEFT": { "frameCount": 1 },
+      "WALK_UP": { "frameCount": 4 },
+      "WALK_DOWN": { "frameCount": 4 },
+      "WALK_LEFT": { "frameCount": 4 },
+      "WALK_UP_LEFT": { "frameCount": 4 },
+      "WALK_DOWN_LEFT": { "frameCount": 4 }
+    }
+  }
+}

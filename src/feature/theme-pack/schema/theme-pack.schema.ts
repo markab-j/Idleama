@@ -1,7 +1,7 @@
 import z from "zod";
 import { parseToObjectIfString } from "@/core/utils/json";
 import { PackMetadataSchema } from "@/shared/schema/pack-metadata.schema";
-import { ThemePackAssetSchema } from "./theme-pack-asset-data.schema";
+import { ThemePackAssetSchema } from "./theme-pack-asset.schema";
 
 export const ThemePackSchema = z.preprocess(
   parseToObjectIfString,

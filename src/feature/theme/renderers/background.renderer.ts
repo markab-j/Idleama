@@ -1,17 +1,17 @@
-import type { BackgroundAsset } from "@feature/theme-pack/schema/background-sprite-data.schema";
 import { toBackgroundSpriteKey } from "@feature/theme-pack/utils";
 import type { GameObj, KAPLAYCtx, LevelComp } from "kaplay";
+import type { BackgroundAsset } from "@/feature/theme-pack/schema/background-asset.schema";
 
 export class BackgroundRenderer {
-    private readonly cache: Map<string, GameObj<LevelComp>>;
-    private currentBackground: GameObj<LevelComp> | null;
+  private readonly cache: Map<string, GameObj<LevelComp>>;
+  private currentBackground: GameObj<LevelComp> | null;
 
-    constructor(private readonly k: KAPLAYCtx) {
-        this.cache = new Map();
-        this.currentBackground = null;
-    }
+  constructor(private readonly k: KAPLAYCtx) {
+    this.cache = new Map();
+    this.currentBackground = null;
+  }
 
-    render(packName: string, backgroundAsset: BackgroundAsset): void {
+  render(packName: string, backgroundAsset: BackgroundAsset): void {
     if (this.currentBackground) {
       this.currentBackground.hidden = true;
     }
