@@ -37,7 +37,7 @@ export class FileSystemCharacterPackLoader implements CharacterPackLoader {
 
   async loadExternalPack(): Promise<CharacterPack[]> {
     this.logger.log("Load External Character Packs...");
-    const basePath = await this.pathProvider.getDefaultPath();
+    const basePath = await this.pathProvider.getUserPath();
     return this.load(basePath);
   }
 
