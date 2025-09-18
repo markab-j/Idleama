@@ -1,5 +1,5 @@
+import type { PackPathProvider } from "@core/interfaces/pack-path-provider.interface";
 import { documentDir, join, resourceDir } from "@tauri-apps/api/path";
-import type { PackPathProvider } from "@/core/interfaces/pack-path-provider.interface";
 
 export class ThemePackPathProvider implements PackPathProvider {
   async getDefaultPath() {

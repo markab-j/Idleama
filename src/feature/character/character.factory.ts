@@ -1,6 +1,6 @@
+import { toCharacterSpriteKey } from "@feature/character-pack/utils";
+import { createLogger } from "@shared/utils/logger";
 import type { KAPLAYCtx, Vec2 } from "kaplay";
-import { toCharacterSpriteKey } from "@/feature/character-pack/utils";
-import { createLogger } from "@/shared/utils/logger";
 import { CharacterGameObj } from "./character.gameobject";
 
 export class CharacterFactory {

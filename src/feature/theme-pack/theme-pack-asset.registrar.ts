@@ -1,6 +1,6 @@
+import type { AssetRegistrar } from "@core/interfaces/asset-loader.interface";
 import type { KAPLAYCtx } from "kaplay";
 import type { ReadonlyDeep } from "type-fest";
-import type { AssetRegistrar } from "@/core/interfaces/asset-loader.interface";
 import type { ThemePack } from "./schema/theme-pack.schema";
 import { toBackgroundSpriteKey } from "./utils";
 

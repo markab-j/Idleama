@@ -1,5 +1,5 @@
+import { parseToObjectIfString } from "@shared/utils/json";
 import z from "zod";
-import { parseToObjectIfString } from "@/shared/utils/json";
 
 export const ThemePackConfigSchema = z.preprocess(
   parseToObjectIfString,

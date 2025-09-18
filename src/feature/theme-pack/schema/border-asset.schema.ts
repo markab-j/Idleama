@@ -1,5 +1,5 @@
+import { BaseAssetSchema } from "@core/schema/base-asset.schema";
 import z from "zod";
-import { BaseAssetSchema } from "@/core/schema/base-asset.schema";
 
 export const BorderAssetSchema = BaseAssetSchema.extend({
   width: z.number().positive(),

@@ -1,5 +1,5 @@
+import { CharacterAnim } from "@feature/character/enums/anim.enum";
 import z from "zod";
-import { CharacterAnim } from "@/feature/character/enums/anim.enum";
 
 const characterAnimKeySchema = z.enum(CharacterAnim);
 const characterAnimSchema = z.object({

@@ -1,6 +1,7 @@
-import { CharacterPackManager } from "@/feature/character-pack/character-pack.manager";
+import { CharacterPackManager } from "@feature/character-pack/character-pack.manager";
 import { MainUIFactory } from "./app/ui.factory";
 import { MainUIManager } from "./app/ui.manager";
+import { WindowManager } from "./app/window/window-manager";
 import { PathService } from "./core/service/path.service";
 import { CharacterFactory } from "./feature/character/character.factory";
 import { CharacterGameObjectManager } from "./feature/character/character-gameobject.manager";
@@ -22,7 +23,6 @@ import { ThemePackManager } from "./feature/theme-pack/theme-pack.manager";
 import { ThemePackAssetRegistrar } from "./feature/theme-pack/theme-pack-asset.registrar";
 import { ThemePackEventListener } from "./feature/theme-pack/theme-pack-event.listener";
 import { ThemePackPathProvider } from "./feature/theme-pack/theme-pack-path.provider";
-import { WindowManager } from "./feature/window/window-manager";
 import { createLogger } from "./shared/utils/logger";
 
 async function main() {

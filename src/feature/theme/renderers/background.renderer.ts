@@ -1,6 +1,6 @@
+import type { BackgroundAsset } from "@feature/theme-pack/schema/background-asset.schema";
 import { toBackgroundSpriteKey } from "@feature/theme-pack/utils";
 import type { GameObj, KAPLAYCtx, LevelComp } from "kaplay";
-import type { BackgroundAsset } from "@/feature/theme-pack/schema/background-asset.schema";
 
 export class BackgroundRenderer {
   private readonly cache: Map<string, GameObj<LevelComp>>;

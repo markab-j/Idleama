@@ -1,3 +1,5 @@
+import { toJson } from "@shared/utils/json";
+import { createLogger } from "@shared/utils/logger";
 import {
   BaseDirectory,
   exists,
@@ -5,8 +7,6 @@ import {
   writeTextFile,
 } from "@tauri-apps/plugin-fs";
 import z from "zod";
-import { toJson } from "@/shared/utils/json";
-import { createLogger } from "@/shared/utils/logger";
 import type { ThemePackConfigStore } from "./interfaces/theme-pack-config-store.interface";
 import {
   type ThemePackConfig,

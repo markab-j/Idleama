@@ -1,5 +1,5 @@
 import kaplay, { type KAPLAYCtx } from "kaplay";
-import type { AppWindowContext } from "../window/types";
+import type { AppWindowContext } from "../../app/window/types";
 
 export class GameManager {
   private readonly k: KAPLAYCtx;

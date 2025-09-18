@@ -1,4 +1,4 @@
-import type { CharacterPackConfig } from "@/feature/character-pack/schema/character-pack-config.schema";
+import type { CharacterPackConfig } from "@feature/character-pack/schema/character-pack-config.schema";
 
 export interface CharacterPackConfigStore {
   load(): Promise<void>;

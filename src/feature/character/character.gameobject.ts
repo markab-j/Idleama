@@ -1,3 +1,6 @@
+import { getIdleAnimKey, getWalkAnimKey } from "@core/utils/anim";
+import { getDirection, isRight } from "@core/utils/direction";
+import { clampPosToScreen } from "@core/utils/world";
 import type {
   GameObj,
   KAPLAYCtx,
@@ -8,9 +11,6 @@ import type {
   TweenController,
   Vec2,
 } from "kaplay";
-import { getIdleAnimKey, getWalkAnimKey } from "@/core/utils/anim";
-import { getDirection, isRight } from "@/core/utils/direction";
-import { clampPosToScreen } from "@/core/utils/world";
 import { CharacterAnim } from "./enums/anim.enum";
 import type { DirectionType } from "./enums/direction.enum";
 import { allStates, CharacterState } from "./enums/state.enum";

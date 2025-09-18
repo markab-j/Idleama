@@ -1,5 +1,10 @@
 import type { CharacterPackManager } from "@feature/character-pack/character-pack.manager";
+import {
+  PackManagementEvent,
+  type PackManagementWindowDomLoadedContext,
+} from "@feature/pack-managment/events";
 import type { ThemePackManager } from "@feature/theme-pack/theme-pack.manager";
+import { createLogger } from "@shared/utils/logger";
 import { emitTo, once } from "@tauri-apps/api/event";
 import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
 import {
@@ -8,11 +13,6 @@ import {
   PhysicalSize,
 } from "@tauri-apps/api/window";
 import { moveWindow, Position } from "@tauri-apps/plugin-positioner";
-import {
-  PackManagementEvent,
-  type PackManagementWindowDomLoadedContext,
-} from "@/feature/pack-managment/events";
-import { createLogger } from "@/shared/utils/logger";
 import { WindowLabel } from "./constants";
 import type { AppWindowContext } from "./types";
 

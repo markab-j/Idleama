@@ -1,8 +1,8 @@
 import {
   CharacterAnim,
   type CharacterAnimType,
-} from "@/feature/character/enums/anim.enum";
-import type { DirectionType } from "@/feature/character/enums/direction.enum";
+} from "@feature/character/enums/anim.enum";
+import type { DirectionType } from "@feature/character/enums/direction.enum";
 
 const IdleAnimMap: Record<DirectionType, CharacterAnimType> = {
   UP: CharacterAnim.IDLE_UP,

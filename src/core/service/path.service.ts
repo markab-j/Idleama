@@ -1,7 +1,7 @@
+import type { CharacterPackPathProvider } from "@feature/character-pack/character-pack-path.provider";
+import type { ThemePackPathProvider } from "@feature/theme-pack/theme-pack-path.provider";
 import { appConfigDir } from "@tauri-apps/api/path";
 import { exists, mkdir } from "@tauri-apps/plugin-fs";
-import type { CharacterPackPathProvider } from "@/feature/character-pack/character-pack-path.provider";
-import type { ThemePackPathProvider } from "@/feature/theme-pack/theme-pack-path.provider";
 
 export class PathService {
   constructor(

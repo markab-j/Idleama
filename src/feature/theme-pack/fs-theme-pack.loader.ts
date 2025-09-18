@@ -1,3 +1,4 @@
+import { createLogger } from "@shared/utils/logger";
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { join } from "@tauri-apps/api/path";
 import {
@@ -9,7 +10,6 @@ import {
 import { clone } from "es-toolkit";
 import { err, ok, type Result } from "neverthrow";
 import z from "zod";
-import { createLogger } from "@/shared/utils/logger";
 import {
   AssetNotFoundError,
   ThemePackError,
