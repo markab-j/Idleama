@@ -1,6 +1,7 @@
+import type { PackPathProvider } from "@core/interfaces/pack-path-provider.interface";
 import { documentDir, join, resourceDir } from "@tauri-apps/api/path";
 
-export class CharacterPackPathProvider {
+export class CharacterPackPathProvider implements PackPathProvider {
   async getDefaultPath(): Promise<string> {
     const resourcePath = await resourceDir();
     const defaultCharacterPath = await join(
