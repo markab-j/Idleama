@@ -1,14 +1,11 @@
-import {
-  Direction,
-  type DirectionType,
-} from "@feature/character/enums/direction.enum";
+import { Direction } from "@core/enum/direction.enum";
 import type { Vec2 } from "kaplay";
 
-export function isRight(direction: DirectionType): boolean {
+export function isRight(direction: Direction): boolean {
   return direction.includes("RIGHT");
 }
 
-export function getDirection(start: Vec2, end: Vec2): DirectionType {
+export function getDirection(start: Vec2, end: Vec2): Direction {
   if (start.x === end.x && start.y === end.y) {
     return Direction.DOWN;
   }

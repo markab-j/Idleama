@@ -8,7 +8,7 @@ import { CharacterGameObjectManager } from "./feature/character/character-gameob
 import { CharacterManager } from "./feature/character/character-manager";
 import { CharacterPackAssetRegistrar } from "./feature/character-pack/character-pack-asset.registrar";
 import { CharacterPackPathProvider } from "./feature/character-pack/character-pack-path.provider";
-import { CharacterSpriteAssetParser } from "./feature/character-pack/character-sprite-atlas-data.provider";
+import { CharacterSpriteAssetParser } from "./feature/character-pack/character-sprite-asset.parser";
 import { FileSystemCharacterPackLoader } from "./feature/character-pack/fs-character-pack.loader";
 import { FileSystemCharacterPackConfigStore } from "./feature/character-pack/fs-character-pack-config.store";
 import { GameManager } from "./feature/game/game.manager";
@@ -46,13 +46,6 @@ async function main() {
 
   const k = gameManager.getGameCtx();
 
-  // Init Character
-  const characterFactory = new CharacterFactory(k);
-  const characterGameObjectManager = new CharacterGameObjectManager(
-    characterFactory,
-  );
-  const characterManager = new CharacterManager(characterGameObjectManager);
-
   // Init CharacterPack
   const characterSpriteAtlasDataProvider = new CharacterSpriteAssetParser();
   const characterPackLoader = new FileSystemCharacterPackLoader(
@@ -71,6 +64,13 @@ async function main() {
     characterPackConfigStore,
   );
   await characterPackManager.init();
+
+  // Init Character
+  const characterFactory = new CharacterFactory(k, characterPackManager);
+  const characterGameObjectManager = new CharacterGameObjectManager(
+    characterFactory,
+  );
+  const characterManager = new CharacterManager(characterGameObjectManager);
 
   // Init Theme
   const backgroundRenderer = new BackgroundRenderer(k);

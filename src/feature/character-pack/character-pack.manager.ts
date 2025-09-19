@@ -25,6 +25,16 @@ export class CharacterPackManager {
     return [...this.characterPacks];
   }
 
+  public get(packName: string): CharacterPack | null {
+    const pack = this.characterPacks.find(
+      (pack) => pack.meta.name === packName,
+    );
+
+    if (!pack) return null;
+
+    return pack;
+  }
+
   public getEnablePacks(): CharacterPack[] {
     const { enabled_packs } = this.config.get();
     return this.characterPacks.filter((pack) =>

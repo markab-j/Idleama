@@ -1,9 +1,37 @@
-import { BaseAssetSchema } from "@core/schema/base-asset.schema";
+import { CharacterSpriteType } from "@core/enum/character-sprite-type.enum";
+import { BaseSpriteAssetSchema } from "@core/schema/base-sprite-asset.schema";
 import z from "zod";
+import {
+  EightAxisAnimSchema,
+  FourAxisAnimSchema,
+  IdleOnlyAnimSchema,
+} from "./character-anim.schema";
 
-export const CharacterSpriteAssetSchema = BaseAssetSchema.extend({
-  columns: z.number().positive(),
-  rows: z.number().positive(),
+export const StaticSpriteAssetSchema = BaseSpriteAssetSchema.extend({
+  type: z.literal(CharacterSpriteType.STATIC),
+  anim: z.undefined(),
 });
+
+const IdleOnlySpriteAssetSchema = BaseSpriteAssetSchema.extend({
+  type: z.literal(CharacterSpriteType.IDLE_ONLY),
+  anim: IdleOnlyAnimSchema,
+});
+
+const FourAxisSprtieAssetSchema = BaseSpriteAssetSchema.extend({
+  type: z.literal(CharacterSpriteType.FOUR_AXIS),
+  anims: FourAxisAnimSchema,
+});
+
+const EightAxisSpriteAssetSchema = BaseSpriteAssetSchema.extend({
+  type: z.literal(CharacterSpriteType.EIGHT_AXIS),
+  anims: EightAxisAnimSchema,
+});
+
+export const CharacterSpriteAssetSchema = z.discriminatedUnion("type", [
+  StaticSpriteAssetSchema,
+  IdleOnlySpriteAssetSchema,
+  FourAxisSprtieAssetSchema,
+  EightAxisSpriteAssetSchema,
+]);
 
 export type CharacterSpriteAsset = z.infer<typeof CharacterSpriteAssetSchema>;

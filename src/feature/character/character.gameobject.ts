@@ -1,84 +1,38 @@
-import { getIdleAnimKey, getWalkAnimKey } from "@core/utils/anim";
-import { getDirection, isRight } from "@core/utils/direction";
-import { clampPosToScreen } from "@core/utils/world";
-import type {
-  GameObj,
-  KAPLAYCtx,
-  PosComp,
-  SpriteComp,
-  StateComp,
-  TimerComp,
-  TweenController,
-  Vec2,
-} from "kaplay";
-import { CharacterAnim } from "./enums/anim.enum";
-import type { DirectionType } from "./enums/direction.enum";
-import { allStates, CharacterState } from "./enums/state.enum";
+import type { Direction } from "@core/enum/direction.enum";
+import { randomInt } from "es-toolkit";
+import type { CharacterAI } from "./ai/character-ai";
+import { CharacterState } from "./enums/state.enum";
+import type { CharacterAnimator } from "./interfaces/character-animator.interface";
+import type { CharacterGameObj } from "./types";
 
-export class CharacterGameObj {
-  private readonly SPEED = 10;
-  private readonly MOVE_RADIUS = 150;
-  tween?: TweenController;
-  gameObj: GameObj<SpriteComp | PosComp | TimerComp | StateComp>;
-
-  constructor(k: KAPLAYCtx, spriteKey: string, pos: Vec2) {
-    const sprite = k.sprite(spriteKey);
-    const initialPos = k.pos(pos.x, pos.y);
-    const timer = k.timer();
-    const state = k.state(CharacterState.Idle, allStates);
-    const layer = k.layer("obj");
-
-    this.gameObj = k.add([sprite, initialPos, timer, state, layer]);
-
+export class Character {
+  constructor(
+    public readonly gameObj: CharacterGameObj,
+    private readonly animator: CharacterAnimator,
+    private readonly ai: CharacterAI,
+  ) {
     this.gameObj.onStateEnter(
       CharacterState.Idle,
-      (beforeDirection?: DirectionType) => {
-        this.updateIdleAnim(beforeDirection);
-        this.gameObj.wait(1, () => this.gameObj.play(CharacterAnim.IDLE_DOWN));
-        this.gameObj.wait(k.randi(3, 10), () =>
-          this.gameObj.enterState(CharacterState.Walk),
-        );
-      },
+      (beforeDirection?: Direction) => this.Idle(beforeDirection),
     );
 
-    this.gameObj.onStateEnter(CharacterState.Walk, () => {
-      const minPos = this.gameObj.pos.sub(this.MOVE_RADIUS, this.MOVE_RADIUS);
-      const maxPos = this.gameObj.pos.add(this.MOVE_RADIUS, this.MOVE_RADIUS);
-      const randomPos = k.rand(minPos, maxPos).toFixed(0);
-
-      const dest = clampPosToScreen(k, randomPos, this.gameObj);
-
-      const distance = this.gameObj.pos.dist(dest);
-      const duration = distance / this.SPEED;
-
-      if (this.tween) {
-        this.tween.cancel();
-      }
-
-      const direction = getDirection(this.gameObj.pos, dest);
-
-      this.updateWalkAnim(direction);
-
-      this.tween = this.gameObj.tween(this.gameObj.pos, dest, duration, (v) => {
-        this.gameObj.pos = v.toFixed(0);
-      });
-
-      this.tween.then(() =>
-        this.gameObj.enterState(CharacterState.Idle, direction),
-      );
-    });
+    this.gameObj.onStateEnter(CharacterState.Walk, () => this.walk());
   }
 
-  private updateIdleAnim(beforeDirection?: DirectionType) {
-    if (beforeDirection) this.gameObj.play(getIdleAnimKey(beforeDirection));
-    else this.gameObj.play(CharacterAnim.IDLE_DOWN);
+  private walk() {
+    const move = this.ai.walk(this.gameObj);
+    const tween = this.animator.playWalk(this.gameObj, move);
+
+    tween.then(() =>
+      this.gameObj.enterState(CharacterState.Idle, move.direction),
+    );
   }
 
-  private updateWalkAnim(direction: DirectionType) {
-    this.gameObj.flipX = isRight(direction);
-
-    const animKey = getWalkAnimKey(direction);
-
-    this.gameObj.play(animKey);
+  private Idle(beforeDirection?: Direction) {
+    this.animator.playIdle(this.gameObj, beforeDirection);
+    const newState = this.ai.nextState();
+    this.gameObj.wait(randomInt(3, 10), () =>
+      this.gameObj.enterState(newState),
+    );
   }
 }

@@ -1,23 +1,27 @@
 import type { CharacterFactory } from "./character.factory";
-import type { CharacterGameObj } from "./character.gameobject";
+import type { Character } from "./character.gameobject";
 
 export class CharacterGameObjectManager {
-  private readonly characterMap: Map<string, CharacterGameObj>;
+  private readonly enabledCharacters: Map<string, Character>;
 
   constructor(private readonly factory: CharacterFactory) {
-    this.characterMap = new Map();
+    this.enabledCharacters = new Map();
   }
 
   public enableCharacter(packName: string) {
-    if (this.characterMap.has(packName)) return;
+    if (this.enabledCharacters.has(packName)) return;
 
     const character = this.factory.create(packName);
-    this.characterMap.set(packName, character);
+
+    if (character) this.enabledCharacters.set(packName, character);
   }
 
   public disableCharacter(packName: string): void {
-    const character = this.characterMap.get(packName);
-    this.characterMap.delete(packName);
-    character?.gameObj.destroy();
+    const character = this.enabledCharacters.get(packName);
+
+    if (character) {
+      this.enabledCharacters.delete(packName);
+      character.gameObj.destroy();
+    }
   }
 }

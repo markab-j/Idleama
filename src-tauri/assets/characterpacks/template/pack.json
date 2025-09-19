@@ -12,19 +12,20 @@
         "sprite": {
             "src": "sprite.png",
             "columns": 4,
-            "rows": 10
-        },
-        "anims": {
-            "IDLE_UP": { "frameCount": 4 },
-            "IDLE_DOWN": { "frameCount": 4 },
-            "IDLE_LEFT": { "frameCount": 4 },
-            "IDLE_UP_LEFT": { "frameCount": 4 },
-            "IDLE_DOWN_LEFT": { "frameCount": 4 },
-            "WALK_UP": { "frameCount": 4 },
-            "WALK_DOWN": { "frameCount": 4 },
-            "WALK_LEFT": { "frameCount": 4 },
-            "WALK_UP_LEFT": { "frameCount": 4 },
-            "WALK_DOWN_LEFT": { "frameCount": 4 }
+            "rows": 10,
+            "type": "8axis",
+            "anims": {
+                "IDLE_UP": { "frameCount": 4 },
+                "IDLE_DOWN": { "frameCount": 4 },
+                "IDLE_LEFT": { "frameCount": 4 },
+                "IDLE_UP_LEFT": { "frameCount": 4 },
+                "IDLE_DOWN_LEFT": { "frameCount": 4 },
+                "WALK_UP": { "frameCount": 4 },
+                "WALK_DOWN": { "frameCount": 4 },
+                "WALK_LEFT": { "frameCount": 4 },
+                "WALK_UP_LEFT": { "frameCount": 4 },
+                "WALK_DOWN_LEFT": { "frameCount": 4 }
+            }
         }
     }
 }
