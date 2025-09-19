@@ -30,18 +30,15 @@ export class BackgroundRenderer {
       const map = this.generateMap(
         this.k.width(),
         this.k.height(),
-        backgroundAsset.variations, 
-        Math.min(backgroundAsset.tile.width, backgroundAsset.tile.height)
+        backgroundAsset.variations,
+        Math.min(backgroundAsset.tile.width, backgroundAsset.tile.height),
       );
 
-      const newBackground = this.k.addLevel(
-        map,
-        {
-          tileWidth: backgroundAsset.tile.width,
-          tileHeight: backgroundAsset.tile.height,
-          tiles,
-        },
-      );
+      const newBackground = this.k.addLevel(map, {
+        tileWidth: backgroundAsset.tile.width,
+        tileHeight: backgroundAsset.tile.height,
+        tiles,
+      });
 
       this.cache.set(packName, newBackground);
       this.currentBackground = newBackground;
@@ -64,8 +61,16 @@ export class BackgroundRenderer {
     return tiles;
   }
 
-  private generateMap(width: number, height: number, variations: number, tileSize: number): Array<string> {
-    const availableChars = this.VARIATION_SYMBOLS.substring(0, Math.min(variations, this.VARIATION_SYMBOLS.length));
+  private generateMap(
+    width: number,
+    height: number,
+    variations: number,
+    tileSize: number,
+  ): Array<string> {
+    const availableChars = this.VARIATION_SYMBOLS.substring(
+      0,
+      Math.min(variations, this.VARIATION_SYMBOLS.length),
+    );
 
     if (availableChars.length === 0) {
       return [];
@@ -75,8 +80,9 @@ export class BackgroundRenderer {
     const colRepeatCount = Math.ceil(height / tileSize);
 
     const map = Array.from({ length: colRepeatCount }, () =>
-      Array.from({ length: rowRepeatCount }, () =>
-        availableChars[randomInt(0, availableChars.length)]
+      Array.from(
+        { length: rowRepeatCount },
+        () => availableChars[randomInt(0, availableChars.length)],
       ).join(""),
     );
 
