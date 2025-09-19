@@ -1,0 +1,27 @@
+{
+    "meta": {
+         "name": "astronaut",
+         "author": "markab-j",
+         "description": "cute Astronaut",
+         "version": "0.0.1"
+    },
+    "assets": {
+        "character": {
+            "name": "Astronaut"
+        },
+        "sprite": {
+            "src": "sprite.png",
+            "columns": 8,
+            "rows": 6,
+            "type": "4axis",
+            "anims": {
+            "IDLE_UP": { "frameCount": 4 },
+            "IDLE_DOWN": { "frameCount": 4 },
+            "IDLE_LEFT": { "frameCount": 4 },
+            "WALK_UP": { "frameCount": 8 },
+            "WALK_DOWN": { "frameCount": 8 },
+            "WALK_LEFT": { "frameCount": 8 }
+            }
+        }
+    }
+}
