@@ -9,12 +9,12 @@ import {
 
 export const StaticSpriteAssetSchema = BaseSpriteAssetSchema.extend({
   type: z.literal(CharacterSpriteType.STATIC),
-  anim: z.undefined(),
+  anims: z.undefined(),
 });
 
 const IdleOnlySpriteAssetSchema = BaseSpriteAssetSchema.extend({
   type: z.literal(CharacterSpriteType.IDLE_ONLY),
-  anim: IdleOnlyAnimSchema,
+  anims: IdleOnlyAnimSchema,
 });
 
 const FourAxisSprtieAssetSchema = BaseSpriteAssetSchema.extend({

@@ -27,7 +27,7 @@ export class CharacterSpriteAssetParser {
   private parseAnim(asset: CharacterSpriteAsset): SpriteAnims | undefined {
     if (asset.type === CharacterSpriteType.STATIC) return undefined;
     if (asset.type === CharacterSpriteType.IDLE_ONLY)
-      return this.parseIdleOnly(asset.anim);
+      return this.parseIdleOnly(asset.anims);
     if (asset.type === CharacterSpriteType.FOUR_AXIS)
       return this.parse4Axis(asset.anims, asset.columns);
     if (asset.type === CharacterSpriteType.EIGHT_AXIS)
