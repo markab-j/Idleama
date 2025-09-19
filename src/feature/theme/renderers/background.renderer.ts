@@ -1,8 +1,10 @@
 import type { BackgroundAsset } from "@feature/theme-pack/schema/background-asset.schema";
 import { toBackgroundSpriteKey } from "@feature/theme-pack/utils";
-import type { GameObj, KAPLAYCtx, LevelComp } from "kaplay";
+import { randomInt } from "es-toolkit";
+import type { GameObj, KAPLAYCtx, LevelComp, SpriteComp } from "kaplay";
 
 export class BackgroundRenderer {
+  private readonly VARIATION_SYMBOLS = "abcdefghijklmnopqrstuvwxyz";
   private readonly cache: Map<string, GameObj<LevelComp>>;
   private currentBackground: GameObj<LevelComp> | null;
 
@@ -23,22 +25,24 @@ export class BackgroundRenderer {
       this.currentBackground = cachedBackground;
     } else {
       const key = toBackgroundSpriteKey(packName);
+
+      const tiles = this.generateTiles(key, backgroundAsset.variations);
+      const map = this.generateMap(
+        this.k.width(),
+        this.k.height(),
+        backgroundAsset.variations, 
+        Math.min(backgroundAsset.tile.width, backgroundAsset.tile.height)
+      );
+
+      console.log(tiles);
+      console.log(map);
+
       const newBackground = this.k.addLevel(
-        this.generateMap(this.k, this.k.width(), this.k.height()),
+        map,
         {
           tileWidth: backgroundAsset.tile.width,
           tileHeight: backgroundAsset.tile.height,
-          tiles: {
-            "1": () => [this.k.sprite(key, { frame: 56 })],
-            "2": () => [this.k.sprite(key, { frame: 57 })],
-            "3": () => [this.k.sprite(key, { frame: 58 })],
-            "4": () => [this.k.sprite(key, { frame: 59 })],
-            "5": () => [this.k.sprite(key, { frame: 60 })],
-            "6": () => [this.k.sprite(key, { frame: 66 })],
-            "7": () => [this.k.sprite(key, { frame: 67 })],
-            "8": () => [this.k.sprite(key, { frame: 68 })],
-            "9": () => [this.k.sprite(key, { frame: 12 })],
-          },
+          tiles,
         },
       );
 
@@ -47,20 +51,36 @@ export class BackgroundRenderer {
     }
   }
 
-  private generateMap(
-    k: KAPLAYCtx,
-    width: number,
-    height: number,
-  ): Array<string> {
-    const tileSize = 16;
+  private generateTiles(
+    spriteKey: string,
+    variations: number,
+  ): Record<string, () => SpriteComp[]> {
+    const tiles: Record<string, () => SpriteComp[]> = {};
+    const limit = Math.min(variations, this.VARIATION_SYMBOLS.length);
+
+    for (let i = 0; i < limit; i++) {
+      const charKey = this.VARIATION_SYMBOLS[i];
+      const frameIndex = i;
+      tiles[charKey] = () => [this.k.sprite(spriteKey, { frame: frameIndex })];
+    }
+
+    return tiles;
+  }
+
+  private generateMap(width: number, height: number, variations: number, tileSize: number): Array<string> {
+    const availableChars = this.VARIATION_SYMBOLS.substring(0, Math.min(variations, this.VARIATION_SYMBOLS.length));
+
+    if (availableChars.length === 0) {
+      return [];
+    }
 
     const rowRepeatCount = Math.ceil(width / tileSize);
     const colRepeatCount = Math.ceil(height / tileSize);
 
-    const map = Array.from({ length: colRepeatCount }).map(() =>
-      Array.from({ length: rowRepeatCount })
-        .map(() => String(k.randi(1, 10)))
-        .join(""),
+    const map = Array.from({ length: colRepeatCount }, () =>
+      Array.from({ length: rowRepeatCount }, () =>
+        availableChars[randomInt(0, availableChars.length)]
+      ).join(""),
     );
 
     return map;

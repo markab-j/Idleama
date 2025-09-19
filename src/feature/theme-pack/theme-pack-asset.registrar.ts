@@ -13,8 +13,8 @@ export class ThemePackAssetRegistrar implements AssetRegistrar<ThemePack[]> {
         toBackgroundSpriteKey(pack.meta.name),
         pack.assets.background.src,
         {
-          sliceX: 11,
-          sliceY: 7,
+          sliceX: pack.assets.background.columns,
+          sliceY: pack.assets.background.rows,
         },
       );
     }
