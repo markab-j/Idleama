@@ -1,0 +1,31 @@
+{
+    "meta": {
+         "name": "cat",
+         "author": "markab-j",
+         "description": "cat",
+         "version": "0.0.1"
+    },
+    "assets": {
+        "character": {
+            "name": "cat"
+        },
+        "sprite": {
+            "src": "sprite.png",
+            "columns": 5,
+            "rows": 10,
+            "type": "8axis",
+            "anims": {
+                "IDLE_UP": { "frameCount": 5, "speed": 2 },
+                "IDLE_DOWN": { "frameCount": 5, "speed": 2 },
+                "IDLE_LEFT": { "frameCount": 5, "speed": 2 },
+                "IDLE_UP_LEFT": { "frameCount": 5, "speed": 2 },
+                "IDLE_DOWN_LEFT": { "frameCount": 5, "speed": 2 },
+                "WALK_UP": { "frameCount": 4 },
+                "WALK_DOWN": { "frameCount": 4 },
+                "WALK_LEFT": { "frameCount": 4 },
+                "WALK_UP_LEFT": { "frameCount": 4 },
+                "WALK_DOWN_LEFT": { "frameCount": 4 }
+            }
+        }
+    }
+}

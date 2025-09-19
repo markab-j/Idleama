@@ -1,21 +1,37 @@
 {
   "name": "idleama",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "type-check": "tsc --noEmit",
+    "lint": "biome lint --fix && biome check --fix",
+    "tauri:build:win": "bun tauri build --runner cargo-xwin --target x86_64-pc-windows-msvc"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",
-    "@tauri-apps/plugin-opener": "^2"
+    "@tauri-apps/plugin-fs": "^2.4.2",
+    "@tauri-apps/plugin-opener": "^2",
+    "@tauri-apps/plugin-positioner": "^2.3.0",
+    "@tauri-apps/plugin-process": "~2",
+    "es-toolkit": "^1.39.10",
+    "i18next": "^25.5.2",
+    "kaplay": "^3001.0.19",
+    "mitt": "^3.0.1",
+    "neverthrow": "^8.2.0",
+    "vite-tsconfig-paths": "^5.1.4",
+    "zod": "^4.1.8"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.2.4",
     "@tauri-apps/cli": "^2",
-    "vite": "^6.0.3",
-    "typescript": "~5.6.2"
+    "@types/node": "^24.3.3",
+    "type-fest": "^5.0.0",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.3"
   }
 }

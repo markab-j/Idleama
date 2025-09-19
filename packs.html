@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>PackManagement</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="src/global.css"/>
+    <link rel="stylesheet" href="/src/feature/pack-managment/styles.css" />
+    <script type="module" src="/src/feature/pack-managment/main.ts" defer></script>
+    <script type="module" src="/src/prevent-context.ts" defer></script>
+  </head>
+<body>
+  <nav>
+    <h1 id="pack-managment-title"></h1>
+    <button id="close-button">X</button>
+  </nav>
+
+  <div id="pack-tab">
+    <div class="tab-button active">
+      <h2 id="character-pack-tab-title"></h2>
+    </div>
+    <div class="tab-button">
+      <h2 id="theme-pack-tab-title"></h2>
+    </div>
+  </div>
+
+  <div id="packs-container"></div>
+</body>
+</html>

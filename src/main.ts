@@ -1,22 +1,121 @@
-import { invoke } from "@tauri-apps/api/core";
+import { MainUIFactory } from "@app/ui.factory";
+import { MainUIManager } from "@app/ui.manager";
+import { WindowManager } from "@app/window/window-manager";
+import { PathService } from "@core/service/path.service";
+import { CharacterFactory } from "@feature/character/character.factory";
+import { CharacterGameObjectManager } from "@feature/character/character-gameobject.manager";
+import { CharacterManager } from "@feature/character/character-manager";
+import { CharacterPackManager } from "@feature/character-pack/character-pack.manager";
+import { CharacterPackAssetRegistrar } from "@feature/character-pack/character-pack-asset.registrar";
+import { CharacterPackPathProvider } from "@feature/character-pack/character-pack-path.provider";
+import { CharacterSpriteAssetParser } from "@feature/character-pack/character-sprite-asset.parser";
+import { FileSystemCharacterPackLoader } from "@feature/character-pack/fs-character-pack.loader";
+import { FileSystemCharacterPackConfigStore } from "@feature/character-pack/fs-character-pack-config.store";
+import { GameManager } from "@feature/game/game.manager";
+import { PackManagementEventListener } from "@feature/pack-managment/pack-management-event.listener";
+import { BackgroundRenderer } from "@feature/theme/renderers/background.renderer";
+import { BorderRenderer } from "@feature/theme/renderers/border.renderer";
+import { ThemeRenderer } from "@feature/theme/renderers/theme.renderer";
+import { ThemeManager } from "@feature/theme/theme.manager";
+import { FileSystemThemePackLoader } from "@feature/theme-pack/fs-theme-pack.loader";
+import { FileSystemThemePackConfigStore } from "@feature/theme-pack/fs-theme-pack-config.store";
+import { ThemePackManager } from "@feature/theme-pack/theme-pack.manager";
+import { ThemePackAssetRegistrar } from "@feature/theme-pack/theme-pack-asset.registrar";
+import { ThemePackEventListener } from "@feature/theme-pack/theme-pack-event.listener";
+import { ThemePackPathProvider } from "@feature/theme-pack/theme-pack-path.provider";
+import { createLogger } from "@shared/utils/logger";
 
-let greetInputEl: HTMLInputElement | null;
-let greetMsgEl: HTMLElement | null;
+async function main() {
+  // Init Window
+  const appWindowContext = await WindowManager.initMainWindow();
 
-async function greet() {
-  if (greetMsgEl && greetInputEl) {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    greetMsgEl.textContent = await invoke("greet", {
-      name: greetInputEl.value,
-    });
-  }
+  // TODO
+  // Loading Screen
+
+  const characterPackPathProvider = new CharacterPackPathProvider();
+  const themePackPathProvider = new ThemePackPathProvider();
+  // Init
+  const pathService = new PathService(
+    characterPackPathProvider,
+    themePackPathProvider,
+  );
+
+  await pathService.initAppPath();
+
+  const gameManager = new GameManager(appWindowContext);
+
+  const k = gameManager.getGameCtx();
+
+  // Init CharacterPack
+  const characterSpriteAtlasDataProvider = new CharacterSpriteAssetParser();
+  const characterPackLoader = new FileSystemCharacterPackLoader(
+    characterPackPathProvider,
+  );
+  const characterPackAssetRegistrar = new CharacterPackAssetRegistrar(
+    k,
+    characterSpriteAtlasDataProvider,
+  );
+  const characterPackConfigStore = new FileSystemCharacterPackConfigStore();
+  await characterPackConfigStore.load();
+
+  const characterPackManager = new CharacterPackManager(
+    characterPackLoader,
+    characterPackAssetRegistrar,
+    characterPackConfigStore,
+  );
+  await characterPackManager.init();
+
+  // Init Character
+  const characterFactory = new CharacterFactory(k, characterPackManager);
+  const characterGameObjectManager = new CharacterGameObjectManager(
+    characterFactory,
+  );
+  const characterManager = new CharacterManager(characterGameObjectManager);
+
+  // Init Theme
+  const backgroundRenderer = new BackgroundRenderer(k);
+  const borderRenderer = new BorderRenderer();
+  const themeRenderer = new ThemeRenderer(backgroundRenderer, borderRenderer);
+  const themeManager = new ThemeManager(themeRenderer);
+
+  // Init Theme Pack
+  const themePackEventListener = new ThemePackEventListener(themeManager);
+  const themePackLoader = new FileSystemThemePackLoader(themePackPathProvider);
+  const themePackAssetRegisterar = new ThemePackAssetRegistrar(k);
+  const themePackConfigStore = new FileSystemThemePackConfigStore();
+  await themePackConfigStore.load();
+
+  const themePackManager = new ThemePackManager(
+    themePackLoader,
+    themePackAssetRegisterar,
+    themePackConfigStore,
+  );
+
+  themePackEventListener.init();
+  await themePackManager.init();
+
+  const packManagementEventListener = new PackManagementEventListener(
+    characterPackManager,
+    characterManager,
+  );
+  packManagementEventListener.init();
+
+  const windowManager = new WindowManager(
+    characterPackManager,
+    themePackManager,
+  );
+  const mainUIFactory = new MainUIFactory(windowManager);
+  const mainUIManager = new MainUIManager(mainUIFactory);
+
+  await mainUIManager.initTitleBar();
+
+  // Main
+
+  characterManager.initializeCharacters(characterPackManager.getEnablePacks());
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  greetInputEl = document.querySelector("#greet-input");
-  greetMsgEl = document.querySelector("#greet-msg");
-  document.querySelector("#greet-form")?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    greet();
-  });
-});
+const mainLogger = createLogger("Main");
+
+main()
+  .then(() => mainLogger.log("Initialized"))
+  .catch((e) => mainLogger.error(e));

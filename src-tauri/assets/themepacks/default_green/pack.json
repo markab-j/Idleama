@@ -1,0 +1,25 @@
+{
+    "meta": {
+        "name": "green background",
+        "author": "markab-j",
+        "description": "Default green theme.",
+        "version": "0.0.1"
+    },
+    "assets": {
+        "background": {
+            "src": "background.png",
+            "tile": {
+                "width": 16,
+                "height": 16
+            },
+            "columns": 13,
+            "rows": 1,
+            "variations": 13
+        },
+        "border": {
+            "src": "border.png",
+            "width": 16,
+            "height": 16
+        }
+    }
+}
