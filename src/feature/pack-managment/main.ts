@@ -1,4 +1,5 @@
 import { WindowLabel } from "@app/window/constants";
+import { i18nInitialize } from "@core/i18n/initalize";
 import type { CharacterPack } from "@feature/character-pack/schema/character-pack.schema";
 import type { ThemePack } from "@feature/theme-pack/schema/theme-pack.schema";
 import { emitTo, once } from "@tauri-apps/api/event";
@@ -17,7 +18,7 @@ let currentThemeName: string = "";
 
 let activeTab: PackTab = "character";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const closeButton = document.getElementById(
     "close-button",
   ) as HTMLButtonElement;
@@ -49,6 +50,9 @@ document.addEventListener("DOMContentLoaded", () => {
       renderContent();
     },
   );
+
+  // i18n
+  await i18nInitialize();
 
   emitTo(WindowLabel.main, PackManagementEvent.READY);
 });
