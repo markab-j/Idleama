@@ -1,5 +1,5 @@
 import type { Move } from "@core/interfaces/move.interface";
-import { getDirection, isRight } from "@core/utils/direction";
+import { isRight } from "@core/utils/direction";
 import type { TweenController } from "kaplay";
 import { Direction } from "../../../core/enum/direction.enum";
 import { EightAxisAnimKey } from "../enums/character-anim-key.enum";
@@ -24,11 +24,9 @@ export class EightAxisAnimator implements CharacterAnimator {
   }
 
   playWalk(gameObj: CharacterGameObj, move: Move): TweenController {
-    const direction = getDirection(move.start, move.dest);
+    gameObj.flipX = isRight(move.direction);
 
-    gameObj.flipX = isRight(direction);
-
-    gameObj.play(this.getWalkAnimKey(direction));
+    gameObj.play(this.getWalkAnimKey(move.direction));
     const tween = this.tweenMap.get(gameObj);
     if (tween) tween.cancel();
 
