@@ -29,9 +29,9 @@ export class CharacterSpriteAssetParser {
     if (asset.type === CharacterSpriteType.IDLE_ONLY)
       return this.parseIdleOnly(asset.anim);
     if (asset.type === CharacterSpriteType.FOUR_AXIS)
-      return this.parse4Axis(asset.anims);
+      return this.parse4Axis(asset.anims, asset.columns);
     if (asset.type === CharacterSpriteType.EIGHT_AXIS)
-      return this.parse8Axis(asset.anims);
+      return this.parse8Axis(asset.anims, asset.columns);
 
     return undefined;
   }
@@ -49,43 +49,45 @@ export class CharacterSpriteAssetParser {
     };
   }
 
-  private parse4Axis(anims: FourAxisAnims): SpriteAnims {
+  private parse4Axis(anims: FourAxisAnims, columns: number): SpriteAnims {
     const spriteAnims: SpriteAnims = {};
-    let currentFrameIndex = 0;
+    let currentRow = 0;
 
     const animKeys = Object.values(FourAxisAnimKey);
 
     for (const animKey of animKeys) {
       const animData = anims[animKey];
+
       if (!animData) continue;
 
       const { frameCount, speed } = animData;
-      const from = currentFrameIndex;
-      const to = currentFrameIndex + frameCount - 1;
+      const from = currentRow * columns;
+      const to = from + frameCount - 1;
 
       spriteAnims[animKey] = { from, to, loop: true, speed };
-      currentFrameIndex = to + 1;
+      currentRow++;
     }
 
     return spriteAnims;
   }
 
-  private parse8Axis(anims: EightAxisAnims): SpriteAnims {
+  private parse8Axis(anims: EightAxisAnims, columns: number): SpriteAnims {
     const spriteAnims: SpriteAnims = {};
-    let currentFrameIndex = 0;
+    let currentRow = 0;
 
     const animKeys = Object.values(EightAxisAnimKey);
 
     for (const animKey of animKeys) {
       const animData = anims[animKey];
+
       if (!animData) continue;
 
       const { frameCount, speed } = animData;
-      const from = currentFrameIndex;
-      const to = currentFrameIndex + frameCount - 1;
+      const from = currentRow * columns;
+      const to = from + frameCount - 1;
 
       spriteAnims[animKey] = { from, to, loop: true, speed };
-      currentFrameIndex = to + 1;
+      currentRow++;
     }
 
     return spriteAnims;

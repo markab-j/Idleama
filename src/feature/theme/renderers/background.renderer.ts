@@ -34,9 +34,6 @@ export class BackgroundRenderer {
         Math.min(backgroundAsset.tile.width, backgroundAsset.tile.height)
       );
 
-      console.log(tiles);
-      console.log(map);
-
       const newBackground = this.k.addLevel(
         map,
         {

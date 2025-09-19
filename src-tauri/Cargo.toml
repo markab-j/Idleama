@@ -1,7 +1,7 @@
 [package]
 name = "idleama"
-version = "0.1.0"
-description = "A Tauri App"
+version = "0.2.0"
+description = "Desktop Utility"
 authors = ["markab-j"]
 edition = "2021"
 
