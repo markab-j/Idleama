@@ -12,8 +12,9 @@
                 "width": 16,
                 "height": 16
             },
-            "columns": 14,
-            "rows": 7
+            "columns": 13,
+            "rows": 1,
+            "variations": 13
         },
         "border": {
             "src": "border.png",
