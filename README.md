@@ -22,7 +22,7 @@ This project is currently in its **Alpha version**, with only Minimum Viable Pro
 
 ## 🖼️ Screenshots
 
-(Screenshots or GIFs of the application will be added later.)
+![screenwebp](./docs/result.webp)
 
 ## 🚀 Getting Started
 
