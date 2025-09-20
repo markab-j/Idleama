@@ -36,6 +36,7 @@ export default defineConfig(async ({ mode }) => ({
       input: {
         main: resolve(__dirname, "index.html"),
         pack: resolve(__dirname, "packs.html"),
+        setting: resolve(__dirname, "settings.html"),
       }
     }
   }
