@@ -28,13 +28,21 @@ This project is currently in its **Alpha version**, with only Minimum Viable Pro
 
 ### System Requirements
 
-* Windows 10 or later
+* **Windows 10 or later**
 
 ### Installation (Alpha Version)
 
 1.  Go to the [Releases](https://gitlab.com/markab.j.nn/Idleama/-/releases).
-2.  From the `Assets` list of the latest version, download the `.zip` file that matches your operating system.
-3.  Unzip the downloaded file and run the `Idleama Setup` executable.
+2.  From the `Assets` list of the latest version, download the installer file that matches your operating system (e.g., `Idleama_x.x.x_x64_setup.exe`).
+3.  Run the downloaded installer.
+
+## 📖 Documentation
+
+For more details on how to add and configure character packs, please refer to the documentation below.
+
+*   [한국어](./docs/USAGE.ko.md)
+*   [English](./docs/USAGE.en.md)
+*   [日本語](./docs/USAGE.ja.md)
 
 ## 🤝 Contributing
 
