@@ -71,15 +71,11 @@ export class WindowManager {
   }
 
   async showWindow(windowLabel: WindowLabel) {
-    if (this.currentWebViewWindow?.label === windowLabel) {
-      await this.currentWebViewWindow.close();
-      this.currentWebViewWindow = null;
-      return;
-    }
+    const targetWindow = await WebviewWindow.getByLabel(windowLabel);
 
-    if (this.currentWebViewWindow) {
-      await this.currentWebViewWindow.close();
-      this.currentWebViewWindow = null;
+    if (targetWindow) {
+      await targetWindow.setFocus();
+      return;
     }
 
     switch (windowLabel) {
