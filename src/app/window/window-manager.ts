@@ -71,26 +71,26 @@ export class WindowManager {
   }
 
   async showWindow(windowLabel: WindowLabel) {
-  if (this.currentWebViewWindow?.label === windowLabel) {
-    await this.currentWebViewWindow.close();
-    this.currentWebViewWindow = null;
-    return;
-  }
+    if (this.currentWebViewWindow?.label === windowLabel) {
+      await this.currentWebViewWindow.close();
+      this.currentWebViewWindow = null;
+      return;
+    }
 
-  if (this.currentWebViewWindow) {
-    await this.currentWebViewWindow.close();
-    this.currentWebViewWindow = null;
-  }
+    if (this.currentWebViewWindow) {
+      await this.currentWebViewWindow.close();
+      this.currentWebViewWindow = null;
+    }
 
-  switch (windowLabel) {
-    case WindowLabel.packManagement:
-      this.currentWebViewWindow = await this.packManagementWindow();
-      break;
-    case WindowLabel.settings:
-      this.currentWebViewWindow = await this.settingWindow();
-      break;
+    switch (windowLabel) {
+      case WindowLabel.packManagement:
+        this.currentWebViewWindow = await this.packManagementWindow();
+        break;
+      case WindowLabel.settings:
+        this.currentWebViewWindow = await this.settingWindow();
+        break;
+    }
   }
-}
 
   private async packManagementWindow(): Promise<WebviewWindow> {
     const packManagementWindow = new WebviewWindow(WindowLabel.packManagement, {

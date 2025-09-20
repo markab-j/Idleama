@@ -2,6 +2,7 @@
 import { WindowLabel } from "@app/window/constants";
 import tauriFsBackEnd from "@core/i18n/tauri-backend";
 import type { CharacterPack } from "@feature/character-pack/schema/character-pack.schema";
+import { SettingConfigStore } from "@feature/settings/setting-config.store";
 import type { ThemePack } from "@feature/theme-pack/schema/theme-pack.schema";
 import { emitTo, once } from "@tauri-apps/api/event";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
@@ -10,7 +11,6 @@ import {
   PackManagementEvent,
   type PackManagementWindowDomLoadedEvent,
 } from "./events";
-import { SettingConfigStore } from "@feature/settings/setting-config.store";
 
 type PackTab = "character" | "theme";
 

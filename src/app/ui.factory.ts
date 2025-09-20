@@ -21,7 +21,8 @@ export class MainUIFactory {
 
     btn.addEventListener(
       "click",
-      async () => await this.windowManager.showWindow(WindowLabel.packManagement),
+      async () =>
+        await this.windowManager.showWindow(WindowLabel.packManagement),
     );
 
     return btn;
