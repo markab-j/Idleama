@@ -18,14 +18,11 @@ import type { AppWindowContext } from "./types";
 
 export class WindowManager {
   private static readonly logger = createLogger(WindowManager.name);
-  private currentWebViewWindow: WebviewWindow | null;
 
   constructor(
     private readonly characterPackManager: CharacterPackManager,
     private readonly themePackManager: ThemePackManager,
-  ) {
-    this.currentWebViewWindow = null;
-  }
+  ) {}
 
   static async initMainWindow(): Promise<AppWindowContext> {
     const monitor = await currentMonitor();
@@ -80,10 +77,10 @@ export class WindowManager {
 
     switch (windowLabel) {
       case WindowLabel.packManagement:
-        this.currentWebViewWindow = await this.packManagementWindow();
+        await this.packManagementWindow();
         break;
       case WindowLabel.settings:
-        this.currentWebViewWindow = await this.settingWindow();
+        await this.settingWindow();
         break;
     }
   }
