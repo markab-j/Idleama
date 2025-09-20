@@ -7,19 +7,16 @@ import {
   writeTextFile,
 } from "@tauri-apps/plugin-fs";
 import z from "zod";
+import { WindowLevel } from "./enum/window-level.enum";
 import {
   type SettingConfig,
   SettingConfigSchema,
 } from "./schema/setting-config.schema";
 
 const SETTING_CONFIG = {
-  EMPTY: {
-    lang: "",
-    windowLevel: "",
-  },
   DEFAULT: {
     lang: "en",
-    windowLevel: "top",
+    windowLevel: WindowLevel.alwaysOnTop,
   },
 };
 
@@ -29,7 +26,7 @@ export class SettingConfigStore {
   private config: SettingConfig;
 
   constructor() {
-    this.config = SETTING_CONFIG.EMPTY;
+    this.config = SETTING_CONFIG.DEFAULT;
   }
 
   async load(): Promise<void> {
@@ -57,7 +54,7 @@ export class SettingConfigStore {
       this.logger.warn(
         "load failed ChracterPackConfig... using Default Config",
       );
-      this.config = SETTING_CONFIG.EMPTY;
+      this.config = SETTING_CONFIG.DEFAULT;
       return;
     }
 
@@ -85,7 +82,7 @@ export class SettingConfigStore {
     return this.config.windowLevel;
   }
 
-  public async setWindowLevel(windowLevel: string) {
+  public async setWindowLevel(windowLevel: WindowLevel) {
     this.config.windowLevel = windowLevel;
 
     await this.save();

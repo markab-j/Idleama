@@ -6,6 +6,7 @@ import {
   WebviewWindow,
 } from "@tauri-apps/api/webviewWindow";
 import i18next from "i18next";
+import { WindowLevel } from "./enum/window-level.enum";
 import { SettingConfigStore } from "./setting-config.store";
 
 const languageMap: Record<string, string> = {
@@ -47,7 +48,7 @@ function setupEventListeners(
       const mainWindow = await WebviewWindow.getByLabel(WindowLabel.main);
       if (mainWindow) mainWindow.setAlwaysOnTop(true);
 
-      settingConfigStore.setWindowLevel("alwaysOnTop");
+      settingConfigStore.setWindowLevel(WindowLevel.alwaysOnTop);
     });
 
   document
@@ -56,7 +57,7 @@ function setupEventListeners(
       const mainWindow = await WebviewWindow.getByLabel(WindowLabel.main);
       if (mainWindow) mainWindow.setAlwaysOnTop(false);
 
-      settingConfigStore.setWindowLevel("alwaysOnBottom");
+      settingConfigStore.setWindowLevel(WindowLevel.alwaysOnBottom);
     });
 
   const select = document.getElementById("language-select")!;
