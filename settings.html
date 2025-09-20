@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Settings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/src/global.css"/>
+    <link rel="stylesheet" href="/src/feature/settings/styles.css" />
+    <script type="module" src="/src/feature/settings/main.ts" defer></script>
+    <script type="module" src="/src/prevent-context.ts" defer></script>
+  </head>
+<body>
+  <div class="container" data-tauri-drag-region>
+    <nav data-tauri-drag-region>
+      <h1 id="settings-title"></h1>
+      <button id="close-button">X</button>
+    </nav>
+
+    <main class="settings-container">
+      <section class="setting-group">
+        <h2 id="language-setting-title"></h2>
+        <div class="select-wrapper">
+          <div class="select" id="language-select">
+            <div class="select-trigger">
+              <span id="selected-language"></span>
+              <div class="arrow"></div>
+            </div>
+            <div class="options">
+              <div class="option" data-value="ko"></div>
+              <div class="option" data-value="en"></div>
+              <div class="option" data-value="ja"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="setting-group">
+        <h2 id="window-level-title"></h2>
+        <div class="button-group">
+            <button id="always-on-top-button" class="setting-button"></button>
+            <button id="always-on-bottom-button" class="setting-button"></button>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

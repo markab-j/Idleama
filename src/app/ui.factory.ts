@@ -1,13 +1,13 @@
 import type { WindowManager } from "@app/window/window-manager";
-import { convertFileSrc } from "@tauri-apps/api/core";
-import { resolveResource } from "@tauri-apps/api/path";
 import { exit } from "@tauri-apps/plugin-process";
+import { WindowLabel } from "./window/constants";
 
 export class MainUIFactory {
   constructor(private readonly windowManager: WindowManager) {}
 
   async createPowerButton(): Promise<HTMLButtonElement> {
-    const btn = await this.createMenuButton("Power");
+    const btn = this.createMenuButton("X");
+    btn.classList.add("power-btn");
 
     btn.addEventListener("click", async () => {
       await exit(0);
@@ -17,29 +17,32 @@ export class MainUIFactory {
   }
 
   async createPackManagementButton(): Promise<HTMLButtonElement> {
-    const btn = await this.createMenuButton("Gear");
+    const btn = this.createMenuButton("PACK");
 
     btn.addEventListener(
       "click",
-      async () => await this.windowManager.packManagementWindow(),
+      async () => await this.windowManager.showWindow(WindowLabel.packManagement),
     );
 
     return btn;
   }
 
-  private async createMenuButton(iconName: string): Promise<HTMLButtonElement> {
-    const iconResourcePath = await resolveResource(`assets/ui/${iconName}.png`);
-    const imgSrc = convertFileSrc(iconResourcePath);
+  async createSettingButton(): Promise<HTMLButtonElement> {
+    const btn = this.createMenuButton("SETTING");
 
+    btn.addEventListener(
+      "click",
+      async () => await this.windowManager.showWindow(WindowLabel.settings),
+    );
+
+    return btn;
+  }
+
+  private createMenuButton(text: string): HTMLButtonElement {
     const btn = document.createElement("button");
 
     btn.classList.add("menu-btn");
-
-    const img = document.createElement("img");
-    img.src = imgSrc;
-    img.alt = iconName;
-
-    btn.appendChild(img);
+    btn.textContent = text;
 
     return btn;
   }

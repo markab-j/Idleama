@@ -1,5 +1,22 @@
 {
-    "pack-managment-title": "팩 관리",
-    "character-pack-tab-title": "캐릭터 팩",
-    "theme-pack-tab-title": "테마 팩"
+  "common": {
+    "save": "저장",
+    "cancel": "취소"
+  },
+  "packManagement": {
+    "title": "팩 관리",
+    "characterPackTabTitle": "캐릭터 팩",
+    "themePackTabTitle": "테마 팩"
+  },
+  "settings": {
+    "title": "설정",
+    "language": {
+      "title": "언어"
+    },
+    "windowLevel": {
+      "title": "창 레벨",
+      "alwaysOnTop": "항상 위에",
+      "alwaysOnBack": "항상 뒤에"
+    }
+  }
 }

@@ -1,0 +1,22 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "packManagement": {
+    "title": "Pack Management",
+    "characterPackTabTitle": "Character Packs",
+    "themePackTabTitle": "Theme Packs"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": {
+      "title": "Languege"
+    },
+    "windowLevel": {
+      "title": "Window Level",
+      "alwaysOnTop": "Always on Top",
+      "alwaysOnBack": "Always on Back"
+    }
+  }
+}

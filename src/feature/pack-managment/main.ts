@@ -1,13 +1,16 @@
+/** biome-ignore-all lint/style/noNonNullAssertion: is NOT NULL */
 import { WindowLabel } from "@app/window/constants";
-import { i18nInitialize } from "@core/i18n/initalize";
+import tauriFsBackEnd from "@core/i18n/tauri-backend";
 import type { CharacterPack } from "@feature/character-pack/schema/character-pack.schema";
 import type { ThemePack } from "@feature/theme-pack/schema/theme-pack.schema";
 import { emitTo, once } from "@tauri-apps/api/event";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
+import i18next from "i18next";
 import {
   PackManagementEvent,
   type PackManagementWindowDomLoadedEvent,
 } from "./events";
+import { SettingConfigStore } from "@feature/settings/setting-config.store";
 
 type PackTab = "character" | "theme";
 
@@ -18,7 +21,35 @@ let currentThemeName: string = "";
 
 let activeTab: PackTab = "character";
 
+function applyTranslations() {
+  document.getElementById("pack-managment-title")!.textContent =
+    i18next.t("title");
+  document.getElementById("character-pack-tab-title")!.textContent = i18next.t(
+    "characterPackTabTitle",
+  );
+  document.getElementById("theme-pack-tab-title")!.textContent =
+    i18next.t("themePackTabTitle");
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
+  const settingConfigStore = new SettingConfigStore();
+
+  await settingConfigStore.load();
+
+  await i18next.use(tauriFsBackEnd).init({
+    lng: settingConfigStore.getCurrentLang(),
+    fallbackLng: "en",
+    ns: ["common", "packManagement"],
+    defaultNS: "packManagement",
+  });
+
+  applyTranslations();
+
+  i18next.on("languageChanged", () => {
+    applyTranslations();
+    renderContent();
+  });
+
   const closeButton = document.getElementById(
     "close-button",
   ) as HTMLButtonElement;
@@ -50,9 +81,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderContent();
     },
   );
-
-  // i18n
-  await i18nInitialize();
 
   emitTo(WindowLabel.main, PackManagementEvent.READY);
 });
@@ -115,7 +143,9 @@ function createCharacterPackElement(
 
   const controlHtml = `
     <div class="checkbox-container">
-      <input type="checkbox" id="${elementId}" class="pack-checkbox" ${enabled ? "checked" : ""}>
+      <input type="checkbox" id="${elementId}" class="pack-checkbox" ${
+        enabled ? "checked" : ""
+      }>
       <label for="${elementId}"></label>
     </div>
   `;
@@ -155,7 +185,9 @@ function createThemePackElement(
 
   const controlHtml = `
     <div class="checkbox-container">
-      <input type="radio" id="${elementId}" name="theme-pack" class="pack-radio" value="${packName}" ${isCurrent ? "checked" : ""}>
+      <input type="radio" id="${elementId}" name="theme-pack" class="pack-radio" value="${packName}" ${
+        isCurrent ? "checked" : ""
+      }>
       <label for="${elementId}"></label>
     </div>
   `;
@@ -184,8 +216,13 @@ function createPackItemBase(pack: CharacterPack | ThemePack): HTMLElement {
       <div class="pack-image"></div>
       <div class="pack-details">
         <strong class="pack-name">${pack.meta.name}</strong>
-        <span class="pack-description">${pack.meta.description || "설명 없음"}</span>
-        <span class="pack-author">제작자: ${pack.meta.author || "알 수 없음"}</span>
+        <span class="pack-description">${
+          pack.meta.description || i18next.t("noDescription", "설명 없음")
+        }</span>
+        <span class="pack-author">${i18next.t(
+          "authorPrefix",
+          "제작자: ",
+        )}${pack.meta.author || i18next.t("unknownAuthor", "알 수 없음")}</span>
       </div>
     `;
   return packItem;

@@ -7,9 +7,12 @@ export class MainUIManager {
     const menus = document.getElementById("menu") as HTMLLIElement;
 
     const powerButton = await this.uiFactory.createPowerButton();
-    const optionButton = await this.uiFactory.createPackManagementButton();
+    const packManagementButton =
+      await this.uiFactory.createPackManagementButton();
+    const settingButton = await this.uiFactory.createSettingButton();
 
     menus.appendChild(powerButton);
-    menus.appendChild(optionButton);
+    menus.appendChild(packManagementButton);
+    menus.appendChild(settingButton);
   }
 }

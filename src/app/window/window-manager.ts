@@ -18,11 +18,14 @@ import type { AppWindowContext } from "./types";
 
 export class WindowManager {
   private static readonly logger = createLogger(WindowManager.name);
+  private currentWebViewWindow: WebviewWindow | null;
 
   constructor(
     private readonly characterPackManager: CharacterPackManager,
     private readonly themePackManager: ThemePackManager,
-  ) {}
+  ) {
+    this.currentWebViewWindow = null;
+  }
 
   static async initMainWindow(): Promise<AppWindowContext> {
     const monitor = await currentMonitor();
@@ -67,22 +70,30 @@ export class WindowManager {
     };
   }
 
-  async packManagementWindow(): Promise<void> {
-    let packManagementWindow = await WebviewWindow.getByLabel(
-      WindowLabel.packManagement,
-    );
+  async showWindow(windowLabel: WindowLabel) {
+  if (this.currentWebViewWindow?.label === windowLabel) {
+    await this.currentWebViewWindow.close();
+    this.currentWebViewWindow = null;
+    return;
+  }
 
-    WindowManager.logger.log(
-      "createPackManagementWindow",
-      packManagementWindow,
-    );
+  if (this.currentWebViewWindow) {
+    await this.currentWebViewWindow.close();
+    this.currentWebViewWindow = null;
+  }
 
-    if (packManagementWindow) {
-      packManagementWindow.setFocus();
-      return;
-    }
+  switch (windowLabel) {
+    case WindowLabel.packManagement:
+      this.currentWebViewWindow = await this.packManagementWindow();
+      break;
+    case WindowLabel.settings:
+      this.currentWebViewWindow = await this.settingWindow();
+      break;
+  }
+}
 
-    packManagementWindow = new WebviewWindow(WindowLabel.packManagement, {
+  private async packManagementWindow(): Promise<WebviewWindow> {
+    const packManagementWindow = new WebviewWindow(WindowLabel.packManagement, {
       url: "packs.html",
       width: 400,
       height: 600,
@@ -90,6 +101,8 @@ export class WindowManager {
       transparent: true,
       decorations: false,
       shadow: false,
+      alwaysOnTop: true,
+      resizable: false,
     });
 
     packManagementWindow.once("tauri://window-created", async () => {
@@ -121,5 +134,27 @@ export class WindowManager {
         packs.length,
       );
     });
+
+    return packManagementWindow;
+  }
+
+  private async settingWindow(): Promise<WebviewWindow> {
+    const settingWindow = new WebviewWindow(WindowLabel.settings, {
+      url: "settings.html",
+      width: 400,
+      height: 600,
+      devtools: true,
+      transparent: true,
+      decorations: false,
+      shadow: false,
+      alwaysOnTop: true,
+      resizable: false,
+    });
+
+    settingWindow.once("tauri://window-created", async () => {
+      if (settingWindow) await settingWindow.center();
+    });
+
+    return settingWindow;
   }
 }

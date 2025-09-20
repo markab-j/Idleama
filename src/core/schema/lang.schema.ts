@@ -4,9 +4,26 @@ import z from "zod";
 export const LanguegeSchema = z.preprocess(
   parseToObjectIfString,
   z.object({
-    "pack-managment-title": z.string(),
-    "character-pack-tab-title": z.string(),
-    "theme-pack-tab-title": z.string(),
+    common: z.object({
+      save: z.string(),
+      cancel: z.string(),
+    }),
+    packManagement: z.object({
+      title: z.string(),
+      characterPackTabTitle: z.string(),
+      themePackTabTitle: z.string(),
+    }),
+    settings: z.object({
+      title: z.string(),
+      language: z.object({
+        title: z.string(),
+      }),
+      windowLevel: z.object({
+        title: z.string(),
+        alwaysOnTop: z.string(),
+        alwaysOnBack: z.string(),
+      }),
+    }),
   }),
 );
 

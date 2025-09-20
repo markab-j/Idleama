@@ -1,4 +1,5 @@
-export const WindowLabel = {
-  main: "main",
-  packManagement: "pack-management",
-} as const;
+export enum WindowLabel {
+  main = "main",
+  packManagement = "pack-management",
+  settings = "settings",
+}

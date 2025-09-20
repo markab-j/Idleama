@@ -1,0 +1,22 @@
+{
+  "common": {
+    "save": "保存",
+    "cancel": "キャンセル"
+  },
+  "packManagement": {
+    "title": "パック管理",
+    "characterPackTabTitle": "キャラクターパック",
+    "themePackTabTitle": "テーマパック"
+  },
+  "settings": {
+    "title": "設定",
+    "language": {
+      "title": "言語"
+    },
+    "windowLevel": {
+      "title": "ウィンドウレベル",
+      "alwaysOnTop": "常に手前に表示",
+      "alwaysOnBack": "常に背面に表示"
+    }
+  }
+}
